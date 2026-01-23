@@ -18,8 +18,7 @@ function extractHostname(url) {
   if (!url) return '';
   
   let hostname = url.replace(/^https?:\/\//, '');
-  hostname = hostname.split('/')[0];
-  hostname = hostname.split(':')[0];
+  hostname = hostname.split('/')[0].split(':')[0];
   
   return hostname || url;
 }
@@ -204,7 +203,7 @@ async function switchToServer(serverId) {
       if (signal.aborted || result.aborted) {
         return;
       }
-      
+
       const isConnected = result.status === 'connected';
 
       if (isConnected) {
