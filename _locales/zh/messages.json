@@ -1,0 +1,1106 @@
+{
+  "activeDownloads": {
+    "message": "任务",
+    "description": "正在下载区域标题"
+  },
+  "activeDownloadsCount": {
+    "message": "当前活跃下载: $1个",
+    "description": "活跃下载数量"
+  },
+  "activeRefreshInterval": {
+    "message": "有下载任务时",
+    "description": "有下载任务时刷新间隔标签"
+  },
+  "addException": {
+    "message": "添加异常:",
+    "description": "添加异常"
+  },
+  "addFailed": {
+    "message": "添加失败:",
+    "description": "添加失败"
+  },
+  "addFailedDetail": {
+    "message": "添加失败: $1",
+    "description": "添加失败详情"
+  },
+  "addFailedPopup": {
+    "message": "添加失败，请检查连接和设置",
+    "description": "弹窗中添加失败"
+  },
+  "addNewServer": {
+    "message": "+ 添加新服务器",
+    "description": "添加新服务器按钮"
+  },
+  "addResponse": {
+    "message": "添加响应: $1 $2",
+    "description": "添加响应"
+  },
+  "addServer": {
+    "message": "添加服务器",
+    "description": "添加服务器按钮"
+  },
+  "addSuccess": {
+    "message": "添加成功",
+    "description": "添加成功"
+  },
+  "addedCSRFToken": {
+    "message": "添加CSRF令牌",
+    "description": "添加CSRF令牌"
+  },
+  "addingMagnet": {
+    "message": "添加磁力链接: $1",
+    "description": "添加磁力链接"
+  },
+  "altDomainSet": {
+    "message": "使用备用方法设置域名: $1",
+    "description": "备用域名设置"
+  },
+  "altSpeedMode": {
+    "message": "备用速度",
+    "description": "备用速度模式指示器"
+  },
+  "alternativeLogin": {
+    "message": "尝试备用登录方法...",
+    "description": "备用登录"
+  },
+  "alternativeLoginFailed": {
+    "message": "备用登录失败:",
+    "description": "备用登录失败"
+  },
+  "anonymousAccess": {
+    "message": "匿名访问",
+    "description": "无需账号密码访问"
+  },
+  "authCookieExpired": {
+    "message": "认证Cookie已过期",
+    "description": "认证Cookie已过期提示"
+  },
+  "authFailed": {
+    "message": "验证失败",
+    "description": "认证失败消息"
+  },
+  "authRequired": {
+    "message": "需要认证",
+    "description": "认证需要消息"
+  },
+  "authRequiredCSRF": {
+    "message": "需要认证 (CSRF保护已启用)",
+    "description": "CSRF认证需要消息"
+  },
+  "authSuccessful": {
+    "message": "认证成功",
+    "description": "认证成功"
+  },
+  "autoConnect": {
+    "message": "启动时自动连接",
+    "description": "自动连接复选框"
+  },
+  "autoDetect": {
+    "message": "自动检测(Auto-detect)"
+  },
+  "autoRefresh": {
+    "message": "自动刷新",
+    "description": "自动刷新复选框标签"
+  },
+  "autoRefreshOff": {
+    "message": "关",
+    "description": "无刷新简写"
+  },
+  "autoRefreshTooltip": {
+    "message": "自动刷新",
+    "description": "自动刷新开关提示"
+  },
+  "cancel": {
+    "message": "取消",
+    "description": "取消按钮文本"
+  },
+  "categoryPlaceholder": {
+    "message": "例如：video",
+    "description": "分类占位符"
+  },
+  "checking": {
+    "message": "检查中",
+    "description": "检查中状态"
+  },
+  "checkingConnection": {
+    "message": "正在检查连接状态...",
+    "description": "检查连接状态"
+  },
+  "checkingStatus": {
+    "message": "检查中...",
+    "description": "服务器连接状态：检查中"
+  },
+  "chineseSimplified": {
+    "message": "简体中文"
+  },
+  "clearInput": {
+    "message": "清空",
+    "description": "清空输入按钮工具提示"
+  },
+  "clickToConfigure": {
+    "message": "点击打开设置页面配置服务器地址",
+    "description": "提示用户点击并配置服务器设置"
+  },
+  "close": {
+    "message": "关闭",
+    "description": "关闭"
+  },
+  "communicationError": {
+    "message": "通信错误",
+    "description": "通信错误"
+  },
+  "configurationRequired": {
+    "message": "需要配置",
+    "description": "服务器配置需要的通知标题"
+  },
+  "confirmDelete": {
+    "message": "确定要删除 \"$1\" 吗？",
+    "description": "确认删除下载消息"
+  },
+  "confirmDeleteCookies": {
+    "message": "确定要删除所有qBittorrent Cookie吗？\n这将需要重新登录qBittorrent。",
+    "description": "确认删除Cookie"
+  },
+  "confirmDeleteMessage": {
+    "message": "确定要删除 \"$1\" 吗？",
+    "description": "删除确认对话框的主要信息，$1将被替换为种子名称"
+  },
+  "confirmDeleteServer": {
+    "message": "确定要删除服务器\"$1\"吗？",
+    "description": "删除服务器确认提示"
+  },
+  "confirmDeleteTitle": {
+    "message": "确认删除",
+    "description": "删除确认对话框的标题"
+  },
+  "confirmLogout": {
+    "message": "确定要注销服务器 $1 吗？",
+    "description": "注销确认提示"
+  },
+  "confirmPauseAll": {
+    "message": "确定要暂停全部 $1 个下载任务吗？",
+    "description": "暂停全部下载的确认信息"
+  },
+  "connected": {
+    "message": "已连接",
+    "description": "已连接"
+  },
+  "connectedAndAuthenticated": {
+    "message": "已连接并认证",
+    "description": "已连接并认证"
+  },
+  "connectedNeedAuth": {
+    "message": "已连接，需要认证",
+    "description": "已连接但需要认证"
+  },
+  "connectedStatus": {
+    "message": "已连接",
+    "description": "服务器连接状态：已连接"
+  },
+  "connectionError": {
+    "message": "页面脚本未就绪",
+    "description": "内容脚本未加载时的错误提示"
+  },
+  "connectionFailed": {
+    "message": "连接失败",
+    "description": "连接失败消息"
+  },
+  "connectionOkLoginFailed": {
+    "message": "连接成功但登录失败",
+    "description": "连接OK但登录失败"
+  },
+  "connectionStatusUpdated": {
+    "message": "连接状态已更新",
+    "description": "连接状态已更新消息"
+  },
+  "contextMenuCreated": {
+    "message": "右键菜单已创建",
+    "description": "右键菜单已创建"
+  },
+  "contextMenuNormalTitle": {
+    "message": "以普通下载方式发送",
+    "description": "右键菜单选项：以普通下载方式发送"
+  },
+  "contextMenuSequentialTitle": {
+    "message": "以顺序下载开始",
+    "description": "右键菜单选项：以顺序下载方式发送"
+  },
+  "contextMenuTitle": {
+    "message": "发送到qBittorrent",
+    "description": "右键菜单标题"
+  },
+  "cookieManager": {
+    "message": "Cookie管理",
+    "description": "Cookie管理"
+  },
+  "cookieManagerTitle": {
+    "message": "Cookie管理 - qBittorrent助手",
+    "description": "Cookie管理器标题"
+  },
+  "csrfEnabled": {
+    "message": "CSRF保护已启用",
+    "description": "CSRF保护已启用"
+  },
+  "csrfTokenExpired": {
+    "message": "CSRF令牌可能已过期",
+    "description": "CSRF令牌过期"
+  },
+  "currentServer": {
+    "message": "当前服务器",
+    "description": "当前服务器选择器标签"
+  },
+  "currentServerLabel": {
+    "message": "当前使用",
+    "description": "当前服务器的标签"
+  },
+  "currentServerSettings": {
+    "message": "当前服务器设置",
+    "description": "当前服务器设置区域标题"
+  },
+  "currentSpeedLimits": {
+    "message": "当前速度限制",
+    "description": "当前速度限制显示提示"
+  },
+  "decodedMagnetLink": {
+    "message": "从网页脚本解码的磁力链接",
+    "description": "Base64编码的磁力链接"
+  },
+  "defaultCategory": {
+    "message": "默认分类：",
+    "description": "默认分类标签"
+  },
+  "defaultDeleteFiles": {
+    "message": "默认删除文件：",
+    "description": "默认删除文件开关的标签"
+  },
+  "defaultDeleteFilesDesc": {
+    "message": "删除种子时，默认同时删除文件",
+    "description": "默认删除文件开关的描述"
+  },
+  "defaultSavePath": {
+    "message": "默认保存路径：",
+    "description": "默认保存路径标签"
+  },
+  "defaultTags": {
+    "message": "默认标签（用逗号分隔）：",
+    "description": "默认标签标签"
+  },
+  "delete": {
+    "message": "删除",
+    "description": "删除按钮"
+  },
+  "deleteAllCookies": {
+    "message": "删除所有Cookie",
+    "description": "删除所有Cookie"
+  },
+  "deleteCookieFailed": {
+    "message": "删除Cookie失败:",
+    "description": "删除Cookie失败"
+  },
+  "deleteFailed": {
+    "message": "删除失败",
+    "description": "服务器删除失败提示"
+  },
+  "deleteFiles": {
+    "message": "同时删除文件",
+    "description": "从磁盘删除种子文件的复选框选项"
+  },
+  "deleteFilesTooltip": {
+    "message": "如果勾选，已下载的文件将从硬盘永久删除",
+    "description": "删除文件复选框的提示信息"
+  },
+  "deleteOnlyTorrent": {
+    "message": "仅删除种子",
+    "description": "未勾选删除文件时的标签"
+  },
+  "deleteServer": {
+    "message": "删除服务器",
+    "description": "删除服务器按钮"
+  },
+  "deleteWithFiles": {
+    "message": "删除种子和文件",
+    "description": "勾选删除文件时的标签"
+  },
+  "deletedCookiesCount": {
+    "message": "已删除 $1 个Cookie",
+    "description": "已删除Cookie数量"
+  },
+  "deletingCookiesStatus": {
+    "message": "正在删除Cookie...",
+    "description": "删除Cookie状态"
+  },
+  "disconnectedStatus": {
+    "message": "未连接",
+    "description": "服务器连接状态：未连接"
+  },
+  "domainSetSuccess": {
+    "message": "Cookie域名设置成功: $1",
+    "description": "域名设置成功"
+  },
+  "downloadComplete": {
+    "message": "下载完成",
+    "description": "下载完成通知标题"
+  },
+  "downloadCompleted": {
+    "message": "下载完成: $1",
+    "description": "下载完成日志"
+  },
+  "downloading": {
+    "message": "下载中",
+    "description": "下载中状态"
+  },
+  "editServer": {
+    "message": "编辑服务器",
+    "description": "编辑服务器标题"
+  },
+  "english": {
+    "message": "English"
+  },
+  "enterMagnetLink": {
+    "message": "请输入磁力链接",
+    "description": "输入磁力链接"
+  },
+  "enterValidMagnet": {
+    "message": "请输入有效的磁力链接（以magnet:开头）",
+    "description": "输入有效的磁力链接"
+  },
+  "enterValidUrl": {
+    "message": "请输入有效的WebUI地址",
+    "description": "URL为空或无效时的提示"
+  },
+  "enterWebuiAddress": {
+    "message": "请输入WebUI地址",
+    "description": "输入WebUI地址"
+  },
+  "error": {
+    "message": "错误",
+    "description": "错误"
+  },
+  "extensionDescription": {
+    "message": "一款轻量级扩展，让你只需点击一次即可远程控制 qBittorrent 下载。直接从浏览器工具栏监控进度、管理任务和添加磁力链接",
+    "description": "扩展描述"
+  },
+  "extensionInitialized": {
+    "message": "扩展初始化完成",
+    "description": "扩展初始化完成"
+  },
+  "extensionInstalled": {
+    "message": "扩展安装/更新",
+    "description": "扩展安装"
+  },
+  "extensionName": {
+    "message": "qBittorrent磁力助手",
+    "description": "扩展名称"
+  },
+  "failed": {
+    "message": "失败",
+    "description": "失败"
+  },
+  "failedURL": {
+    "message": "失败的URL:",
+    "description": "失败的URL"
+  },
+  "fiveMinutes": {
+    "message": "5分钟",
+    "description": "5分钟选项"
+  },
+  "fiveSeconds": {
+    "message": "5秒",
+    "description": "5秒选项"
+  },
+  "fixErrorsBeforeSave": {
+    "message": "请先修正表单中的错误",
+    "description": "保存前表单有错误时的提示"
+  },
+  "foundCookiesCount": {
+    "message": "获取到$1个Cookie",
+    "description": "找到Cookie数量"
+  },
+  "foundMagnets": {
+    "message": "找到的磁力链接",
+    "description": "搜索结果标题"
+  },
+  "getCookieError": {
+    "message": "获取Cookie失败:",
+    "description": "获取Cookie错误"
+  },
+  "getCookieFailed": {
+    "message": "获取Cookie失败:",
+    "description": "获取Cookie失败"
+  },
+  "hidePassword": {
+    "message": "隐藏密码",
+    "description": "隐藏密码按钮的提示文本"
+  },
+  "inactiveRefreshInterval": {
+    "message": "无下载任务时",
+    "description": "无下载任务时刷新间隔标签"
+  },
+  "invalidUrlFormat": {
+    "message": "请输入有效的URL地址",
+    "description": "URL格式验证失败时的错误提示"
+  },
+  "justNow": {
+    "message": "刚刚",
+    "description": "刚刚时间指示器"
+  },
+  "language": {
+    "message": "语言（Language）："
+  },
+  "languageChanged": {
+    "message": "语言切换成功"
+  },
+  "lastRefresh": {
+    "message": "上次刷新：",
+    "description": "最后刷新时间标签"
+  },
+  "lastUpdated": {
+    "message": "更新于 $1",
+    "description": "最后更新时间显示"
+  },
+  "loadFailed": {
+    "message": "加载失败: $1",
+    "description": "加载失败"
+  },
+  "loadedAuthCookie": {
+    "message": "已加载认证Cookie: $1",
+    "description": "成功加载认证Cookie时显示"
+  },
+  "loadingCookies": {
+    "message": "正在加载Cookie...",
+    "description": "正在加载Cookie"
+  },
+  "locateOnPage": {
+    "message": "定位",
+    "description": "定位按钮文字"
+  },
+  "locateOnPageTooltip": {
+    "message": "在页面中定位此磁力链接",
+    "description": "定位按钮提示"
+  },
+  "loginDisable": {
+    "message": "由于登录失败，当前服务器连接登录已被禁用3分钟\n请检查输入的信息以及qBittorrent WebUI的IP封禁",
+    "description": "多次登录失败后临时禁用登录时显示的消息"
+  },
+  "loginFailed": {
+    "message": "登录失败: $1",
+    "description": "登录失败"
+  },
+  "loginTestSuccess": {
+    "message": "登录成功并测试完成",
+    "description": "登录测试成功"
+  },
+  "loginTestSuccessful": {
+    "message": "登录测试成功",
+    "description": "登录测试成功"
+  },
+  "logoutBtn": {
+    "message": "注销",
+    "description": "注销按钮文本"
+  },
+  "logoutFailed": {
+    "message": "注销失败",
+    "description": "注销失败提示"
+  },
+  "logoutSuccess": {
+    "message": "注销成功",
+    "description": "注销成功提示"
+  },
+  "magnetAdded": {
+    "message": "磁力链接已添加到qBittorrent",
+    "description": "磁力链接已添加"
+  },
+  "magnetAddedSequential": {
+    "message": "磁力链接已添加为顺序下载！",
+    "description": "通知消息：磁力链接已添加为顺序下载"
+  },
+  "magnetAddedSuccess": {
+    "message": "磁力链接已添加到qBittorrent",
+    "description": "磁力链接添加成功"
+  },
+  "magnetPlaceholder": {
+    "message": "粘贴磁力链接...",
+    "description": "磁力链接输入框占位符"
+  },
+  "makingRequest": {
+    "message": "请求: $1 $2",
+    "description": "发起请求"
+  },
+  "manageCookiesBtn": {
+    "message": "管理Cookie",
+    "description": "管理Cookie按钮"
+  },
+  "manualRefreshTooltip": {
+    "message": "手动刷新",
+    "description": "手动刷新按钮提示"
+  },
+  "messageReceived": {
+    "message": "收到消息: $1",
+    "description": "收到消息"
+  },
+  "minutes": {
+    "message": "分钟"
+  },
+  "minutesAgo": {
+    "message": "$1分钟前",
+    "description": "分钟前时间指示器"
+  },
+  "needsAuth": {
+    "message": "需认证",
+    "description": "服务器状态：需要认证"
+  },
+  "needsAuthNoCredentials": {
+    "message": "需要认证但未设置用户名密码",
+    "description": "需要认证但无凭证"
+  },
+  "needsLogin": {
+    "message": "需要登录",
+    "description": "需要登录"
+  },
+  "neverUpdated": {
+    "message": "从未更新",
+    "description": "从未更新状态"
+  },
+  "noActiveDownloads": {
+    "message": "无任务",
+    "description": "没有活跃下载任务消息"
+  },
+  "noAddressSet": {
+    "message": "未设置地址",
+    "description": "未设置地址"
+  },
+  "noCSRFToken": {
+    "message": "没有CSRF令牌，请求可能被拒绝",
+    "description": "没有CSRF令牌警告"
+  },
+  "noCorsLoginSuccess": {
+    "message": "no-cors登录可能成功",
+    "description": "No-cors登录成功"
+  },
+  "noCredentialsSet": {
+    "message": "未设置用户名密码",
+    "description": "未设置凭证"
+  },
+  "noDomainSet": {
+    "message": "未设置域名",
+    "description": "未设置域名"
+  },
+  "noDownloadsToPause": {
+    "message": "没有可以暂停的下载任务",
+    "description": "没有下载任务可暂停的提示"
+  },
+  "noDownloadsToResume": {
+    "message": "没有可以继续的下载任务",
+    "description": "没有下载任务可继续的提示"
+  },
+  "noLoginAttempted": {
+    "message": "未尝试登录",
+    "description": "未尝试登录"
+  },
+  "noMagnetDetected": {
+    "message": "未检测到磁力链接",
+    "description": "未检测到磁力链接"
+  },
+  "noMagnetsFound": {
+    "message": "未找到磁力链接",
+    "description": "在网页上没有查找到磁力链接"
+  },
+  "noPausedDownloads": {
+    "message": "没有已暂停的下载任务",
+    "description": "没有已暂停下载任务的提示"
+  },
+  "noRefresh": {
+    "message": "不刷新",
+    "description": "不刷新选项"
+  },
+  "noResponse": {
+    "message": "没有收到响应",
+    "description": "没有收到响应"
+  },
+  "oneMinute": {
+    "message": "1分钟",
+    "description": "1分钟选项"
+  },
+  "openSettings": {
+    "message": "打开设置",
+    "description": "打开设置页面的按钮文本"
+  },
+  "openWebUI": {
+    "message": "打开WebUI",
+    "description": "打开qBittorrent WebUI的提示文本"
+  },
+  "openWebUIBtn": {
+    "message": "打开qBittorrent",
+    "description": "打开WebUI按钮"
+  },
+  "openWebUITooltip": {
+    "message": "打开qBittorrent",
+    "description": "打开WebUI按钮工具提示"
+  },
+  "passwordOptional": {
+    "message": "密码（可选）：",
+    "description": "密码可选标签"
+  },
+  "passwordPlaceholder": {
+    "message": "",
+    "description": "密码占位符"
+  },
+  "pause": {
+    "message": "暂停",
+    "description": "暂停按钮"
+  },
+  "pauseAllTooltip": {
+    "message": "暂停全部下载",
+    "description": "暂停全部按钮提示"
+  },
+  "paused": {
+    "message": "已暂停",
+    "description": "已暂停状态"
+  },
+  "pausing": {
+    "message": "暂停中...",
+    "description": "暂停中状态"
+  },
+  "popupTitle": {
+    "message": "qBittorrent助手",
+    "description": "弹窗标题"
+  },
+  "processFailed": {
+    "message": "处理失败:",
+    "description": "处理失败"
+  },
+  "processFailedDetail": {
+    "message": "处理失败: $1",
+    "description": "处理失败详情"
+  },
+  "processing": {
+    "message": "处理中",
+    "description": "处理中"
+  },
+  "processingMagnet": {
+    "message": "处理磁力链接: $1",
+    "description": "处理磁力链接"
+  },
+  "queued": {
+    "message": "排队中",
+    "description": "排队中状态"
+  },
+  "quickAddBtn": {
+    "message": "快速添加磁力链接",
+    "description": "快速添加按钮"
+  },
+  "refresh": {
+    "message": "刷新",
+    "description": "刷新"
+  },
+  "refreshFailed": {
+    "message": "刷新失败",
+    "description": "刷新失败消息"
+  },
+  "refreshIntervalMinPlural": {
+    "message": "$1分",
+    "description": "分级刷新间隔格式（复数）"
+  },
+  "refreshIntervalMinSingular": {
+    "message": "$1分",
+    "description": "分级刷新间隔格式（单数）"
+  },
+  "refreshIntervalShortPlural": {
+    "message": "$1秒",
+    "description": "秒级刷新间隔格式（复数）"
+  },
+  "refreshIntervalShortSingular": {
+    "message": "$1秒",
+    "description": "秒级刷新间隔格式（单数）"
+  },
+  "refreshPageTip": {
+    "message": "等待页面加载完成或者刷新页面后重试",
+    "description": "提示刷新页面"
+  },
+  "refreshSuccess": {
+    "message": "下载数据已刷新",
+    "description": "刷新成功消息"
+  },
+  "resume": {
+    "message": "继续",
+    "description": "继续按钮"
+  },
+  "resumeAllTooltip": {
+    "message": "继续全部下载",
+    "description": "继续全部按钮提示"
+  },
+  "resuming": {
+    "message": "继续中...",
+    "description": "继续中状态"
+  },
+  "rightClick": {
+    "message": "右键点击: $1",
+    "description": "右键点击"
+  },
+  "saveFailed": {
+    "message": "保存失败",
+    "description": "服务器保存失败提示"
+  },
+  "savePathPlaceholder": {
+    "message": "例如：D:\\Downloads",
+    "description": "保存路径占位符"
+  },
+  "saveServer": {
+    "message": "保存服务器",
+    "description": "保存服务器按钮"
+  },
+  "saveServerSettings": {
+    "message": "保存服务器设置",
+    "description": "保存服务器设置按钮"
+  },
+  "saveSettings": {
+    "message": "保存设置",
+    "description": "保存设置按钮"
+  },
+  "savedAuthCookie": {
+    "message": "已保存认证Cookie: $1",
+    "description": "成功保存认证Cookie时显示"
+  },
+  "savedSID": {
+    "message": "已保存SID作为CSRF令牌",
+    "description": "保存SID消息"
+  },
+  "savedTo": {
+    "message": "保存到",
+    "description": "通知中的保存位置"
+  },
+  "scanPageForMagnets": {
+    "message": "扫描页面磁力链接",
+    "description": "扫描页面磁力链接按钮提示"
+  },
+  "seconds": {
+    "message": "秒"
+  },
+  "seeding": {
+    "message": "做种中",
+    "description": "做种中状态"
+  },
+  "selectLanguage": {
+    "message": "选择语言"
+  },
+  "selectServer": {
+    "message": "选择服务器...",
+    "description": "服务器下拉框占位符"
+  },
+  "selectServerFirst": {
+    "message": "请先选择或创建一个服务器",
+    "description": "未选择服务器时操作提示"
+  },
+  "selectServerToEdit": {
+    "message": "请从左侧选择一个服务器进行编辑，或添加新服务器。",
+    "description": "未选择服务器时的提示"
+  },
+  "sendingMagnet": {
+    "message": "正在发送磁力链接...",
+    "description": "正在发送磁力链接"
+  },
+  "sendingSequential": {
+    "message": "正在发送磁力链接（顺序下载）...",
+    "description": "通知消息：正在发送磁力链接（顺序下载）"
+  },
+  "sequentialDownload": {
+    "message": "顺序下载",
+    "description": "顺序下载开关标签"
+  },
+  "sequentialDownloadTooltip": {
+    "message": "切换顺序下载",
+    "description": "顺序下载开关提示"
+  },
+  "serverDeleted": {
+    "message": "服务器已删除",
+    "description": "服务器删除成功提示"
+  },
+  "serverListHint": {
+    "message": "点击服务器进行编辑，绿色圆点表示当前使用的服务器",
+    "description": "服务器列表提示"
+  },
+  "serverNameDuplicate": {
+    "message": "服务器名称已存在，请使用其他名称",
+    "description": "服务器名称重复时的错误提示"
+  },
+  "serverNameHint": {
+    "message": "用于在列表中识别此服务器",
+    "description": "服务器名称提示"
+  },
+  "serverNameOptional": {
+    "message": "服务器名称（可选）：",
+    "description": "服务器名称标签"
+  },
+  "serverNamePlaceholder": {
+    "message": "例如：家庭NAS、办公室服务器",
+    "description": "服务器名称输入框占位符"
+  },
+  "serverNotFound": {
+    "message": "服务器不存在",
+    "description": "找不到服务器提示"
+  },
+  "serverSaved": {
+    "message": "服务器设置已保存",
+    "description": "服务器保存成功提示"
+  },
+  "serverSettings": {
+    "message": "服务器设置",
+    "description": "服务器设置标题"
+  },
+  "serverSwitched": {
+    "message": "已切换到该服务器",
+    "description": "切换服务器成功提示"
+  },
+  "serverUrlDuplicate": {
+    "message": "服务器地址已存在",
+    "description": "服务器URL重复时的错误提示"
+  },
+  "serversList": {
+    "message": "服务器列表",
+    "description": "服务器列表标题"
+  },
+  "serversManagement": {
+    "message": "服务器管理",
+    "description": "服务器管理区域标题"
+  },
+  "sessionCookie": {
+    "message": "会话Cookie",
+    "description": "会话Cookie"
+  },
+  "setAddressFirst": {
+    "message": "请先设置qBittorrent地址",
+    "description": "请先设置地址"
+  },
+  "setAddressFirstPopup": {
+    "message": "⚠️ 请先设置qBittorrent地址",
+    "description": "弹窗中请先设置地址"
+  },
+  "setAddressFirstSettings": {
+    "message": "请先在设置中配置qBittorrent地址",
+    "description": "设置中请先配置地址"
+  },
+  "setDomainFailed": {
+    "message": "设置域名失败:",
+    "description": "设置域名失败"
+  },
+  "settingDomain": {
+    "message": "设置Cookie域名，原始URL: $1",
+    "description": "设置域名"
+  },
+  "settingsBtn": {
+    "message": "设置",
+    "description": "设置按钮"
+  },
+  "settingsHeader": {
+    "message": "qBittorrent Enhanced 设置",
+    "description": "设置头部"
+  },
+  "settingsSaved": {
+    "message": "设置已保存！",
+    "description": "设置已保存"
+  },
+  "settingsTitle": {
+    "message": "qBittorrent设置",
+    "description": "设置标题"
+  },
+  "settingsTooltip": {
+    "message": "设置",
+    "description": "设置按钮工具提示"
+  },
+  "showPassword": {
+    "message": "显示密码",
+    "description": "显示密码按钮的提示文本"
+  },
+  "speed": {
+    "message": "速度",
+    "description": "速度"
+  },
+  "speedLimit": {
+    "message": "速度限制",
+    "description": "速度限制开关标签"
+  },
+  "speedLimitTooltip": {
+    "message": "切换速度限制",
+    "description": "速度限制开关提示"
+  },
+  "speedLimitTooltipOff": {
+    "message": "备用速度限制：关闭",
+    "description": "备用速度限制关闭提示"
+  },
+  "speedLimitTooltipOn": {
+    "message": "备用速度限制：开启",
+    "description": "备用速度限制开启提示"
+  },
+  "success": {
+    "message": "成功",
+    "description": "成功"
+  },
+  "switchFailed": {
+    "message": "切换服务器失败",
+    "description": "切换服务器失败提示"
+  },
+  "tagsPlaceholder": {
+    "message": "例如：edge-plugin,auto-download",
+    "description": "标签占位符"
+  },
+  "taskCountTooltip": {
+    "message": "当前任务数量",
+    "description": "当前任务数量提示"
+  },
+  "taskStalled": {
+    "message": "已停滞",
+    "description": "表示下载任务已停滞"
+  },
+  "tenSeconds": {
+    "message": "10秒",
+    "description": "10秒选项"
+  },
+  "testConnectionBtn": {
+    "message": "测试连接",
+    "description": "测试连接按钮"
+  },
+  "testingConnection": {
+    "message": "测试连接中...",
+    "description": "测试连接中"
+  },
+  "thirtySeconds": {
+    "message": "30秒",
+    "description": "30秒选项"
+  },
+  "threeSeconds": {
+    "message": "3秒",
+    "description": "3秒选项"
+  },
+  "tip": {
+    "message": "提示",
+    "description": "提示"
+  },
+  "totalProgressTip": {
+    "message": "总进度",
+    "description": "任务总进度"
+  },
+  "tryLoginTest": {
+    "message": "尝试登录进行完整测试...",
+    "description": "尝试登录测试"
+  },
+  "unknownAction": {
+    "message": "未知操作",
+    "description": "未知操作"
+  },
+  "unknownError": {
+    "message": "未知错误",
+    "description": "未知错误"
+  },
+  "unknownStatus": {
+    "message": "未知",
+    "description": "服务器状态未知"
+  },
+  "unlimited": {
+    "message": "无限制",
+    "description": "速度未限制的显示文本"
+  },
+  "unnamedMagnet": {
+    "message": "未命名磁力链接",
+    "description": "磁力链接无名称时显示"
+  },
+  "unnamedServer": {
+    "message": "未命名服务器",
+    "description": "未命名服务器的默认名称"
+  },
+  "urlFormatError": {
+    "message": "URL格式错误: $1",
+    "description": "URL格式错误"
+  },
+  "usernameOptional": {
+    "message": "用户名（可选）：",
+    "description": "用户名可选标签"
+  },
+  "usernamePlaceholder": {
+    "message": "",
+    "description": "用户名占位符"
+  },
+  "version": {
+    "message": "v1.0.0",
+    "description": "版本号"
+  },
+  "viewMore": {
+    "message": "在Web UI查看其余 $1 个...",
+    "description": "查看更多下载"
+  },
+  "waiting": {
+    "message": "等待中",
+    "description": "等待中状态"
+  },
+  "webuiAddress": {
+    "message": "WebUI地址：",
+    "description": "WebUI地址标签"
+  },
+  "webuiAddressExample": {
+    "message": "例如：http://localhost:8080 或 http://192.168.1.100:8080",
+    "description": "WebUI地址示例"
+  },
+  "webuiAddressPlaceholder": {
+    "message": "http://localhost:8080",
+    "description": "WebUI地址占位符"
+  },
+  "webuiSetupGuideTitle": {
+    "message": "qBittorrent WebUI 设置指南",
+    "description": "WebUI设置指南标题"
+  },
+  "enableWebUI": {
+    "message": "在 qBittorrent 中启用 WebUI",
+    "description": "启用WebUI部分标题"
+  },
+  "configureAuthentication": {
+    "message": "配置身份验证",
+    "description": "身份验证设置部分标题"
+  },
+  "configureExtension": {
+    "message": "配置扩展",
+    "description": "扩展设置部分标题"
+  },
+  "step1": {
+    "message": "打开 qBittorrent → 工具 → 设置",
+    "description": "设置步骤1"
+  },
+  "step2": {
+    "message": "点击左侧边栏的 'Web UI'",
+    "description": "设置步骤2"
+  },
+  "step3": {
+    "message": "勾选 'Web 用户界面'",
+    "description": "设置步骤3"
+  },
+  "step4": {
+    "message": "设置用户名和密码",
+    "description": "设置步骤4"
+  },
+  "step5": {
+    "message": "设置端口（默认：8080, 可能被占用）",
+    "description": "设置步骤5"
+  },
+  "step6": {
+    "message": "保存设置",
+    "description": "设置步骤6"
+  },
+  "step6_5": {
+    "message": "再次打开设置 → Web UI，确保IP地址栏上方没有出现配置错误",
+    "description": "设置步骤6.5"
+  },
+  "step7": {
+    "message": "返回此设置页面",
+    "description": "设置步骤7"
+  },
+  "step8": {
+    "message": "添加服务器，比如：http://localhost:8080",
+    "description": "设置步骤8"
+  },
+  "step9": {
+    "message": "输入用户名/密码",
+    "description": "设置步骤9"
+  },
+  "step10": {
+    "message": "点击 '测试连接'",
+    "description": "设置步骤10"
+  }
+}

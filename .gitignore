@@ -1,0 +1,4 @@
+# Edge/Chrome 扩展开发缓存和构建输出
+_metadata/
+.edge-run-profile/
+.vscode/

@@ -1,0 +1,1106 @@
+{
+  "activeDownloads": {
+    "message": "Tasks",
+    "description": "Active downloads section title"
+  },
+  "activeDownloadsCount": {
+    "message": "Active downloads: $1",
+    "description": "Active downloads count"
+  },
+  "activeRefreshInterval": {
+    "message": "Refresh interval when active",
+    "description": "Active refresh interval label"
+  },
+  "addException": {
+    "message": "Add exception:",
+    "description": "Add exception"
+  },
+  "addFailed": {
+    "message": "Add failed:",
+    "description": "Add failed"
+  },
+  "addFailedDetail": {
+    "message": "Add failed: $1",
+    "description": "Add failed detail"
+  },
+  "addFailedPopup": {
+    "message": "Add failed, please check connection and settings",
+    "description": "Add failed in popup"
+  },
+  "addNewServer": {
+    "message": "+ Add New Server",
+    "description": "Add new server button"
+  },
+  "addResponse": {
+    "message": "Add response: $1 $2",
+    "description": "Add response"
+  },
+  "addServer": {
+    "message": "Add New Server",
+    "description": "Add server button"
+  },
+  "addSuccess": {
+    "message": "Add successful",
+    "description": "Add success"
+  },
+  "addedCSRFToken": {
+    "message": "Added CSRF token",
+    "description": "Added CSRF token"
+  },
+  "addingMagnet": {
+    "message": "Adding magnet link: $1",
+    "description": "Adding magnet link"
+  },
+  "altDomainSet": {
+    "message": "Using alternative method to set domain: $1",
+    "description": "Alternative domain set"
+  },
+  "altSpeedMode": {
+    "message": "Alt Speed",
+    "description": "Alternative speed mode indicator"
+  },
+  "alternativeLogin": {
+    "message": "Trying alternative login method...",
+    "description": "Alternative login"
+  },
+  "alternativeLoginFailed": {
+    "message": "Alternative login failed:",
+    "description": "Alternative login failed"
+  },
+  "anonymousAccess": {
+    "message": "Anonymous Access",
+    "description": "Access without username and password"
+  },
+  "authCookieExpired": {
+    "message": "Authentication cookie expired",
+    "description": "Prompt when authentication cookie expires"
+  },
+  "authFailed": {
+    "message": "Authentication failed",
+    "description": "Auth failed message"
+  },
+  "authRequired": {
+    "message": "Authentication required",
+    "description": "Auth required message"
+  },
+  "authRequiredCSRF": {
+    "message": "Authentication required (CSRF protection enabled)",
+    "description": "CSRF auth required message"
+  },
+  "authSuccessful": {
+    "message": "Authentication successful",
+    "description": "Authentication successful"
+  },
+  "autoConnect": {
+    "message": "Auto connect on startup",
+    "description": "Auto connect checkbox"
+  },
+  "autoDetect": {
+    "message": "Auto-detect"
+  },
+  "autoRefresh": {
+    "message": "Auto refresh",
+    "description": "Auto refresh checkbox label"
+  },
+  "autoRefreshOff": {
+    "message": "Off",
+    "description": "No refresh short form"
+  },
+  "autoRefreshTooltip": {
+    "message": "Auto refresh",
+    "description": "Tooltip for auto refresh toggle"
+  },
+  "cancel": {
+    "message": "Cancel",
+    "description": "Cancel button text"
+  },
+  "categoryPlaceholder": {
+    "message": "e.g., video",
+    "description": "Category placeholder"
+  },
+  "checking": {
+    "message": "Checking",
+    "description": "Checking status"
+  },
+  "checkingConnection": {
+    "message": "Checking connection status...",
+    "description": "Checking connection status"
+  },
+  "checkingStatus": {
+    "message": "Checking...",
+    "description": "Server connection status checking"
+  },
+  "chineseSimplified": {
+    "message": "简体中文"
+  },
+  "clearInput": {
+    "message": "Clear",
+    "description": "Clear input button tooltip"
+  },
+  "clickToConfigure": {
+    "message": "Click to open settings page and configure server address",
+    "description": "Prompt user to click and configure server settings"
+  },
+  "close": {
+    "message": "Close",
+    "description": "Close"
+  },
+  "communicationError": {
+    "message": "Communication error",
+    "description": "Communication error"
+  },
+  "configurationRequired": {
+    "message": "Configuration Required",
+    "description": "Title for notification when server configuration is needed"
+  },
+  "confirmDelete": {
+    "message": "Are you sure you want to delete \"$1\"?",
+    "description": "Confirm delete download message"
+  },
+  "confirmDeleteCookies": {
+    "message": "Are you sure you want to delete all qBittorrent cookies?\nThis will require re-login to qBittorrent.",
+    "description": "Confirm delete cookies"
+  },
+  "confirmDeleteMessage": {
+    "message": "Are you sure you want to delete \"$1\"?",
+    "description": "Main message in delete confirmation dialog, $1 will be replaced with torrent name"
+  },
+  "confirmDeleteServer": {
+    "message": "Are you sure you want to delete server: \"$1\"?",
+    "description": "Delete server confirmation prompt"
+  },
+  "confirmDeleteTitle": {
+    "message": "Confirm Delete",
+    "description": "Title of the delete confirmation dialog"
+  },
+  "confirmLogout": {
+    "message": "Are you sure you want to logout from server $1?",
+    "description": "Logout confirmation prompt"
+  },
+  "confirmPauseAll": {
+    "message": "Pause all $1 downloads?",
+    "description": "Confirmation message for pausing all downloads"
+  },
+  "connected": {
+    "message": "Connected",
+    "description": "Connected"
+  },
+  "connectedAndAuthenticated": {
+    "message": "Connected and authenticated",
+    "description": "Connected and authenticated"
+  },
+  "connectedNeedAuth": {
+    "message": "Connected, authentication required",
+    "description": "Connected but needs auth"
+  },
+  "connectedStatus": {
+    "message": "Connected",
+    "description": "Server connection status connected"
+  },
+  "connectionError": {
+    "message": "Content script not ready",
+    "description": "Error when content script is not loaded"
+  },
+  "connectionFailed": {
+    "message": "Connection failed",
+    "description": "Connection failure message"
+  },
+  "connectionOkLoginFailed": {
+    "message": "Connection OK but login failed",
+    "description": "Connection OK login failed"
+  },
+  "connectionStatusUpdated": {
+    "message": "Connection status updated",
+    "description": "Connection status updated message"
+  },
+  "contextMenuCreated": {
+    "message": "Context menu created",
+    "description": "Context menu created"
+  },
+  "contextMenuNormalTitle": {
+    "message": "Send as normal download",
+    "description": "Context menu option: Send as normal download"
+  },
+  "contextMenuSequentialTitle": {
+    "message": "Start as sequential download",
+    "description": "Context menu option: Send as sequential download"
+  },
+  "contextMenuTitle": {
+    "message": "Send to qBittorrent",
+    "description": "Context menu title"
+  },
+  "cookieManager": {
+    "message": "Cookie Management",
+    "description": "Cookie management"
+  },
+  "cookieManagerTitle": {
+    "message": "Cookie Management - qBittorrent Assistant",
+    "description": "Cookie manager title"
+  },
+  "csrfEnabled": {
+    "message": "CSRF protection enabled",
+    "description": "CSRF enabled"
+  },
+  "csrfTokenExpired": {
+    "message": "CSRF token may have expired",
+    "description": "CSRF token expired"
+  },
+  "currentServer": {
+    "message": "Server",
+    "description": "Label for current server selector"
+  },
+  "currentServerLabel": {
+    "message": "Current",
+    "description": "Label for current server"
+  },
+  "currentServerSettings": {
+    "message": "Current Server Settings",
+    "description": "Current server settings section title"
+  },
+  "currentSpeedLimits": {
+    "message": "Current speed limits",
+    "description": "Current speed limits display tooltip"
+  },
+  "decodedMagnetLink": {
+    "message": "Decoded magnet link from page script",
+    "description": "For Base64 encoded magnet links"
+  },
+  "defaultCategory": {
+    "message": "Default category:",
+    "description": "Default category label"
+  },
+  "defaultDeleteFiles": {
+    "message": "Default delete files:",
+    "description": "Label for the default delete files toggle"
+  },
+  "defaultDeleteFilesDesc": {
+    "message": "When deleting torrents, also delete files by default",
+    "description": "Description for the default delete files toggle"
+  },
+  "defaultSavePath": {
+    "message": "Default save path:",
+    "description": "Default save path label"
+  },
+  "defaultTags": {
+    "message": "Default tags (comma separated):",
+    "description": "Default tags label"
+  },
+  "delete": {
+    "message": "Delete",
+    "description": "Delete button"
+  },
+  "deleteAllCookies": {
+    "message": "Delete All Cookies",
+    "description": "Delete all cookies"
+  },
+  "deleteCookieFailed": {
+    "message": "Failed to delete cookies:",
+    "description": "Delete cookie failed"
+  },
+  "deleteFailed": {
+    "message": "Delete failed",
+    "description": "Server delete failure message"
+  },
+  "deleteFiles": {
+    "message": "Also delete files from disk",
+    "description": "Checkbox option to delete torrent files from disk"
+  },
+  "deleteFilesTooltip": {
+    "message": "If checked, the downloaded files will be permanently deleted from your hard drive",
+    "description": "Tooltip for the delete files checkbox"
+  },
+  "deleteOnlyTorrent": {
+    "message": "Remove torrent only",
+    "description": "Label when delete files is unchecked"
+  },
+  "deleteServer": {
+    "message": "Delete Server",
+    "description": "Delete server button"
+  },
+  "deleteWithFiles": {
+    "message": "Remove torrent and files",
+    "description": "Label when delete files is checked"
+  },
+  "deletedCookiesCount": {
+    "message": "Deleted $1 cookies",
+    "description": "Deleted cookies count"
+  },
+  "deletingCookiesStatus": {
+    "message": "Deleting cookies...",
+    "description": "Deleting cookies status"
+  },
+  "disconnectedStatus": {
+    "message": "Disconnected",
+    "description": "Server connection status disconnected"
+  },
+  "domainSetSuccess": {
+    "message": "Cookie domain set successfully: $1",
+    "description": "Domain set success"
+  },
+  "downloadComplete": {
+    "message": "Download Complete",
+    "description": "Download complete notification title"
+  },
+  "downloadCompleted": {
+    "message": "Download completed: $1",
+    "description": "Download completed log"
+  },
+  "downloading": {
+    "message": "Downloading",
+    "description": "Downloading status"
+  },
+  "editServer": {
+    "message": "Edit Server",
+    "description": "Edit server title"
+  },
+  "english": {
+    "message": "English"
+  },
+  "enterMagnetLink": {
+    "message": "Please enter magnet link",
+    "description": "Enter magnet link"
+  },
+  "enterValidMagnet": {
+    "message": "Please enter a valid magnet link (starting with magnet:)",
+    "description": "Enter valid magnet link"
+  },
+  "enterValidUrl": {
+    "message": "Please enter a valid WebUI address",
+    "description": "Prompt when URL is empty or invalid"
+  },
+  "enterWebuiAddress": {
+    "message": "Please enter WebUI address",
+    "description": "Enter WebUI address"
+  },
+  "error": {
+    "message": "Error",
+    "description": "Error"
+  },
+  "extensionDescription": {
+    "message": "Remotely manage qBittorrent: monitor progress, pause/resume tasks, and add magnet links—all from your browser toolbar.",
+    "description": "Extension description"
+  },
+  "extensionInitialized": {
+    "message": "Extension initialized",
+    "description": "Extension initialized"
+  },
+  "extensionInstalled": {
+    "message": "Extension installed/updated",
+    "description": "Extension installed"
+  },
+  "extensionName": {
+    "message": "qBittorrent Magnet Assistant",
+    "description": "Extension name"
+  },
+  "failed": {
+    "message": "Failed",
+    "description": "Failed"
+  },
+  "failedURL": {
+    "message": "Failed URL:",
+    "description": "Failed URL"
+  },
+  "fiveMinutes": {
+    "message": "5 minutes",
+    "description": "5 minutes option"
+  },
+  "fiveSeconds": {
+    "message": "5 seconds",
+    "description": "5 seconds option"
+  },
+  "fixErrorsBeforeSave": {
+    "message": "Please fix errors in the form before saving",
+    "description": "Prompt when there are errors in the form before saving"
+  },
+  "foundCookiesCount": {
+    "message": "Found $1 cookies",
+    "description": "Found cookies count"
+  },
+  "foundMagnets": {
+    "message": "Found magnets",
+    "description": "Search results title"
+  },
+  "getCookieError": {
+    "message": "Failed to get cookies:",
+    "description": "Get cookie error"
+  },
+  "getCookieFailed": {
+    "message": "Failed to get cookies:",
+    "description": "Get cookie failed"
+  },
+  "hidePassword": {
+    "message": "Hide password",
+    "description": "Tooltip text for the button that hides the password"
+  },
+  "inactiveRefreshInterval": {
+    "message": "Refresh interval when idle",
+    "description": "Inactive refresh interval label"
+  },
+  "invalidUrlFormat": {
+    "message": "Please enter a valid URL address",
+    "description": "Error message when URL format validation fails"
+  },
+  "justNow": {
+    "message": "just now",
+    "description": "Just now time indicator"
+  },
+  "language": {
+    "message": "Language:"
+  },
+  "languageChanged": {
+    "message": "Language changed successfully"
+  },
+  "lastRefresh": {
+    "message": "Last refresh:",
+    "description": "Label for last refresh time"
+  },
+  "lastUpdated": {
+    "message": "Updated $1",
+    "description": "Last update time display"
+  },
+  "loadFailed": {
+    "message": "Load failed: $1",
+    "description": "Load failed"
+  },
+  "loadedAuthCookie": {
+    "message": "Loaded authentication cookie: $1",
+    "description": "Displayed when authentication cookie is loaded"
+  },
+  "loadingCookies": {
+    "message": "Loading cookies...",
+    "description": "Loading cookies"
+  },
+  "locateOnPage": {
+    "message": "Locate",
+    "description": "Locate button text"
+  },
+  "locateOnPageTooltip": {
+    "message": "Locate this magnet on the page",
+    "description": "Locate button tooltip"
+  },
+  "loginDisable": {
+    "message": "Login is disabled for 3 minutes due to failed login attempts.\nPlease check address and your credentials and check if your IP is blocked in qBittorrent WebUI.",
+    "description": "Message shown when login is temporarily disabled after multiple failed attempts"
+  },
+  "loginFailed": {
+    "message": "Login failed: $1",
+    "description": "Login failed"
+  },
+  "loginTestSuccess": {
+    "message": "Login successful and test completed",
+    "description": "Login test success"
+  },
+  "loginTestSuccessful": {
+    "message": "Login test successful",
+    "description": "Login test successful"
+  },
+  "logoutBtn": {
+    "message": "Logout",
+    "description": "Logout button text"
+  },
+  "logoutFailed": {
+    "message": "Logout failed",
+    "description": "Logout failure message"
+  },
+  "logoutSuccess": {
+    "message": "Logout successful",
+    "description": "Logout success message"
+  },
+  "magnetAdded": {
+    "message": "Magnet link added to qBittorrent",
+    "description": "Magnet added"
+  },
+  "magnetAddedSequential": {
+    "message": "Magnet link added as sequential download!",
+    "description": "Notification: Magnet link added as sequential download"
+  },
+  "magnetAddedSuccess": {
+    "message": "Magnet link added to qBittorrent",
+    "description": "Magnet added successfully"
+  },
+  "magnetPlaceholder": {
+    "message": "Paste magnet link...",
+    "description": "Magnet input placeholder"
+  },
+  "makingRequest": {
+    "message": "Request: $1 $2",
+    "description": "Making request"
+  },
+  "manageCookiesBtn": {
+    "message": "Manage Cookies",
+    "description": "Manage cookies button"
+  },
+  "manualRefreshTooltip": {
+    "message": "Manual refresh",
+    "description": "Tooltip for manual refresh button"
+  },
+  "messageReceived": {
+    "message": "Message received: $1",
+    "description": "Message received"
+  },
+  "minutes": {
+    "message": "minutes"
+  },
+  "minutesAgo": {
+    "message": "$1 minutes ago",
+    "description": "Minutes ago time indicator"
+  },
+  "needsAuth": {
+    "message": "Needs Auth",
+    "description": "Server status: needs authentication"
+  },
+  "needsAuthNoCredentials": {
+    "message": "Authentication required but no username/password set",
+    "description": "Needs auth no credentials"
+  },
+  "needsLogin": {
+    "message": "Need to login",
+    "description": "Needs login"
+  },
+  "neverUpdated": {
+    "message": "Never",
+    "description": "Never updated status"
+  },
+  "noActiveDownloads": {
+    "message": "No Task",
+    "description": "No active downloads message"
+  },
+  "noAddressSet": {
+    "message": "No address set",
+    "description": "No address set"
+  },
+  "noCSRFToken": {
+    "message": "No CSRF token, request may be rejected",
+    "description": "No CSRF token warning"
+  },
+  "noCorsLoginSuccess": {
+    "message": "no-cors login may be successful",
+    "description": "No-cors login success"
+  },
+  "noCredentialsSet": {
+    "message": "No username/password set",
+    "description": "No credentials set"
+  },
+  "noDomainSet": {
+    "message": "No domain set",
+    "description": "No domain set"
+  },
+  "noDownloadsToPause": {
+    "message": "No downloads to pause",
+    "description": "Message when there are no downloads to pause"
+  },
+  "noDownloadsToResume": {
+    "message": "No downloads to resume",
+    "description": "Message when there are no downloads to resume"
+  },
+  "noLoginAttempted": {
+    "message": "No login attempted",
+    "description": "No login attempted"
+  },
+  "noMagnetDetected": {
+    "message": "No magnet link detected",
+    "description": "No magnet detected"
+  },
+  "noMagnetsFound": {
+    "message": "No magnets found on this page",
+    "description": "No magnets found after search on page"
+  },
+  "noPausedDownloads": {
+    "message": "No paused downloads",
+    "description": "Message when there are no paused downloads"
+  },
+  "noRefresh": {
+    "message": "Never",
+    "description": "No refresh option"
+  },
+  "noResponse": {
+    "message": "No response received",
+    "description": "No response"
+  },
+  "oneMinute": {
+    "message": "1 minute",
+    "description": "1 minute option"
+  },
+  "openSettings": {
+    "message": "Open Settings",
+    "description": "Button text to open settings page"
+  },
+  "openWebUI": {
+    "message": "Open WebUI",
+    "description": "Tooltip text for opening qBittorrent WebUI"
+  },
+  "openWebUIBtn": {
+    "message": "Open qBittorrent",
+    "description": "Open WebUI button"
+  },
+  "openWebUITooltip": {
+    "message": "Open qBittorrent",
+    "description": "Open WebUI button tooltip"
+  },
+  "passwordOptional": {
+    "message": "Password (optional):",
+    "description": "Password optional label"
+  },
+  "passwordPlaceholder": {
+    "message": "",
+    "description": "Password placeholder"
+  },
+  "pause": {
+    "message": "Pause",
+    "description": "Pause button"
+  },
+  "pauseAllTooltip": {
+    "message": "Pause all downloads",
+    "description": "Tooltip for pause all button"
+  },
+  "paused": {
+    "message": "Paused",
+    "description": "Paused status"
+  },
+  "pausing": {
+    "message": "Pausing...",
+    "description": "Pausing status"
+  },
+  "popupTitle": {
+    "message": "qBittorrent Assistant",
+    "description": "Popup title"
+  },
+  "processFailed": {
+    "message": "Processing failed:",
+    "description": "Process failed"
+  },
+  "processFailedDetail": {
+    "message": "Processing failed: $1",
+    "description": "Process failed detail"
+  },
+  "processing": {
+    "message": "Processing",
+    "description": "Processing"
+  },
+  "processingMagnet": {
+    "message": "Processing magnet link: $1",
+    "description": "Processing magnet"
+  },
+  "queued": {
+    "message": "Queued",
+    "description": "Queued status"
+  },
+  "quickAddBtn": {
+    "message": "Quick Add Magnet Link",
+    "description": "Quick add button"
+  },
+  "refresh": {
+    "message": "Refresh",
+    "description": "Refresh"
+  },
+  "refreshFailed": {
+    "message": "Refresh failed",
+    "description": "Refresh failed message"
+  },
+  "refreshIntervalMinPlural": {
+    "message": "$1 mins",
+    "description": "Minute refresh interval format plural"
+  },
+  "refreshIntervalMinSingular": {
+    "message": "$1 min",
+    "description": "Minute refresh interval format"
+  },
+  "refreshIntervalShortPlural": {
+    "message": "$1 secs",
+    "description": "Short refresh interval format plural (seconds)"
+  },
+  "refreshIntervalShortSingular": {
+    "message": "$1 sec",
+    "description": "Short refresh interval format (seconds)"
+  },
+  "refreshPageTip": {
+    "message": "Waiting for page to load or refresh and try again",
+    "description": "Tip to refresh page"
+  },
+  "refreshSuccess": {
+    "message": "Download data refreshed",
+    "description": "Refresh success message"
+  },
+  "resume": {
+    "message": "Resume",
+    "description": "Resume button"
+  },
+  "resumeAllTooltip": {
+    "message": "Resume all downloads",
+    "description": "Tooltip for resume all button"
+  },
+  "resuming": {
+    "message": "Resuming...",
+    "description": "Resuming status"
+  },
+  "rightClick": {
+    "message": "Right click: $1",
+    "description": "Right click"
+  },
+  "saveFailed": {
+    "message": "Save failed",
+    "description": "Server save failure message"
+  },
+  "savePathPlaceholder": {
+    "message": "e.g., D:\\Downloads",
+    "description": "Save path placeholder"
+  },
+  "saveServer": {
+    "message": "Save Server",
+    "description": "Save server button"
+  },
+  "saveServerSettings": {
+    "message": "Save Server Settings",
+    "description": "Save server settings button"
+  },
+  "saveSettings": {
+    "message": "Save Settings",
+    "description": "Save settings button"
+  },
+  "savedAuthCookie": {
+    "message": "Saved authentication cookie: $1",
+    "description": "Displayed when authentication cookie is saved"
+  },
+  "savedSID": {
+    "message": "Saved SID as CSRF token",
+    "description": "Saved SID message"
+  },
+  "savedTo": {
+    "message": "Saved to",
+    "description": "Saved to location in notification"
+  },
+  "scanPageForMagnets": {
+    "message": "Scan page for magnets",
+    "description": "Scan page magnets button tooltip"
+  },
+  "seconds": {
+    "message": "seconds"
+  },
+  "seeding": {
+    "message": "Seeding",
+    "description": "Seeding status"
+  },
+  "selectLanguage": {
+    "message": "Select Language"
+  },
+  "selectServer": {
+    "message": "Select Server...",
+    "description": "Server dropdown placeholder"
+  },
+  "selectServerFirst": {
+    "message": "Please select or create a server first",
+    "description": "No server selected operation prompt"
+  },
+  "selectServerToEdit": {
+    "message": "Please select a server from the left to edit, or add a new server.",
+    "description": "Prompt when no server is selected"
+  },
+  "sendingMagnet": {
+    "message": "Sending magnet link...",
+    "description": "Sending magnet"
+  },
+  "sendingSequential": {
+    "message": "Sending magnet link as sequential download...",
+    "description": "Notification: Sending magnet link as sequential download"
+  },
+  "sequentialDownload": {
+    "message": "Seq. Download",
+    "description": "Sequential download label"
+  },
+  "sequentialDownloadTooltip": {
+    "message": "Enable sequential download",
+    "description": "Sequential download toggle tooltip"
+  },
+  "serverDeleted": {
+    "message": "Server deleted",
+    "description": "Server delete success message"
+  },
+  "serverListHint": {
+    "message": "Click a server to edit, green dot indicates current server",
+    "description": "Server list hint"
+  },
+  "serverNameDuplicate": {
+    "message": "Server name already exists, please use a different name",
+    "description": "Error message when server name is duplicate"
+  },
+  "serverNameHint": {
+    "message": "Used to identify this server in the list",
+    "description": "Server name hint"
+  },
+  "serverNameOptional": {
+    "message": "Server Name (optional):",
+    "description": "Server name label"
+  },
+  "serverNamePlaceholder": {
+    "message": "e.g. Home NAS, Office Server",
+    "description": "Server name input placeholder"
+  },
+  "serverNotFound": {
+    "message": "Server not found",
+    "description": "Server not found message"
+  },
+  "serverSaved": {
+    "message": "Server settings saved",
+    "description": "Server save success message"
+  },
+  "serverSettings": {
+    "message": "Server Settings",
+    "description": "Server settings title"
+  },
+  "serverSwitched": {
+    "message": "Switched to this server",
+    "description": "Server switch success message"
+  },
+  "serverUrlDuplicate": {
+    "message": "Server URL already exists",
+    "description": "Error message when server URL is duplicate"
+  },
+  "serversList": {
+    "message": "Server List",
+    "description": "Server list title"
+  },
+  "serversManagement": {
+    "message": "Server Management",
+    "description": "Servers management section title"
+  },
+  "sessionCookie": {
+    "message": "Session Cookie",
+    "description": "Session cookie"
+  },
+  "setAddressFirst": {
+    "message": "Please set qBittorrent address first",
+    "description": "Set address first"
+  },
+  "setAddressFirstPopup": {
+    "message": "⚠️ Please set qBittorrent address first",
+    "description": "Set address first in popup"
+  },
+  "setAddressFirstSettings": {
+    "message": "Please configure qBittorrent address in settings first",
+    "description": "Set address first in settings"
+  },
+  "setDomainFailed": {
+    "message": "Failed to set domain:",
+    "description": "Set domain failed"
+  },
+  "settingDomain": {
+    "message": "Setting cookie domain, original URL: $1",
+    "description": "Setting domain"
+  },
+  "settingsBtn": {
+    "message": "Settings",
+    "description": "Settings button"
+  },
+  "settingsHeader": {
+    "message": "qBittorrent Enhanced Settings",
+    "description": "Settings header"
+  },
+  "settingsSaved": {
+    "message": "Settings saved!",
+    "description": "Settings saved"
+  },
+  "settingsTitle": {
+    "message": "qBittorrent Settings",
+    "description": "Settings title"
+  },
+  "settingsTooltip": {
+    "message": "Settings",
+    "description": "Settings button tooltip"
+  },
+  "showPassword": {
+    "message": "Show password",
+    "description": "Tooltip text for the button that reveals the password"
+  },
+  "speed": {
+    "message": "Speed",
+    "description": "Download speed"
+  },
+  "speedLimit": {
+    "message": "Speed limit",
+    "description": "Label for speed limit toggle"
+  },
+  "speedLimitTooltip": {
+    "message": "Toggle speed limit",
+    "description": "Tooltip for speed limit toggle"
+  },
+  "speedLimitTooltipOff": {
+    "message": "Alternative Speed Limit: OFF",
+    "description": "Alternative speed limit OFF tooltip"
+  },
+  "speedLimitTooltipOn": {
+    "message": "Alternative Speed Limit: ON",
+    "description": "Alternative speed limit ON tooltip"
+  },
+  "success": {
+    "message": "Success",
+    "description": "Success"
+  },
+  "switchFailed": {
+    "message": "Failed to switch server",
+    "description": "Server switch failure message"
+  },
+  "tagsPlaceholder": {
+    "message": "e.g., edge-plugin,auto-download",
+    "description": "Tags placeholder"
+  },
+  "taskCountTooltip": {
+    "message": "Active tasks count",
+    "description": "Active tasks count tooltip"
+  },
+  "taskStalled": {
+    "message": "Stalled",
+    "description": "Indicates downloads are stalled"
+  },
+  "tenSeconds": {
+    "message": "10 seconds",
+    "description": "10 seconds option"
+  },
+  "testConnectionBtn": {
+    "message": "Test Connection",
+    "description": "Test connection button"
+  },
+  "testingConnection": {
+    "message": "Testing connection...",
+    "description": "Testing connection"
+  },
+  "thirtySeconds": {
+    "message": "30 seconds",
+    "description": "30 seconds option"
+  },
+  "threeSeconds": {
+    "message": "3 seconds",
+    "description": "3 seconds option"
+  },
+  "tip": {
+    "message": "Tip",
+    "description": "Tip"
+  },
+  "totalProgressTip": {
+    "message": "Total progress",
+    "description": "Task total progress"
+  },
+  "tryLoginTest": {
+    "message": "Try login for complete test...",
+    "description": "Try login test"
+  },
+  "unknownAction": {
+    "message": "Unknown action",
+    "description": "Unknown action"
+  },
+  "unknownError": {
+    "message": "Unknown error",
+    "description": "Unknown error"
+  },
+  "unknownStatus": {
+    "message": "Unknown",
+    "description": "Server status unknown"
+  },
+  "unlimited": {
+    "message": "Unlimited",
+    "description": "Display when speed limit is not set"
+  },
+  "unnamedMagnet": {
+    "message": "Unnamed magnet",
+    "description": "Display when magnet has no name"
+  },
+  "unnamedServer": {
+    "message": "Unnamed Server",
+    "description": "Default name for unnamed server"
+  },
+  "urlFormatError": {
+    "message": "URL format error: $1",
+    "description": "URL format error"
+  },
+  "usernameOptional": {
+    "message": "Username (optional):",
+    "description": "Username optional label"
+  },
+  "usernamePlaceholder": {
+    "message": "",
+    "description": "Username placeholder"
+  },
+  "version": {
+    "message": "v1.0.0",
+    "description": "Version"
+  },
+  "viewMore": {
+    "message": "View $1 more in Web UI...",
+    "description": "View more downloads"
+  },
+  "waiting": {
+    "message": "Waiting",
+    "description": "Waiting status"
+  },
+  "webuiAddress": {
+    "message": "WebUI Address:",
+    "description": "WebUI address label"
+  },
+  "webuiAddressExample": {
+    "message": "Example: http://localhost:8080 or http://192.168.1.100:8080",
+    "description": "WebUI address example"
+  },
+  "webuiAddressPlaceholder": {
+    "message": "http://localhost:8080",
+    "description": "WebUI address placeholder"
+  },
+ "webuiSetupGuideTitle": {
+    "message": "qBittorrent WebUI Setup Guide",
+    "description": "Title for WebUI setup guide"
+  },
+  "enableWebUI": {
+    "message": "Enable WebUI in qBittorrent",
+    "description": "Section title for enabling WebUI"
+  },
+  "configureAuthentication": {
+    "message": "Configure Authentication",
+    "description": "Section title for authentication setup"
+  },
+  "configureExtension": {
+    "message": "Configure Extension",
+    "description": "Section title for extension setup"
+  },
+  "step1": {
+    "message": "Open qBittorrent → Tools → Options",
+    "description": "Setup step 1"
+  },
+  "step2": {
+    "message": "Click 'Web UI' on left sidebar",
+    "description": "Setup step 2"
+  },
+  "step3": {
+    "message": "Check 'Enable Web User Interface'",
+    "description": "Setup step 3"
+  },
+  "step4": {
+    "message": "Set username and password",
+    "description": "Setup step 4"
+  },
+  "step5": {
+    "message": "Set port (default: 8080, may be occupied)",
+    "description": "Setup step 5"
+  },
+  "step6": {
+    "message": "Save Settings",
+    "description": "Setup step 6"
+  },
+  "step6_5": {
+    "message": "Reopen Options → Web UI, ensure no configuration error appears above IP address field",
+    "description": "Setup step 6.5"
+  },
+  "step7": {
+    "message": "Return to this settings page",
+    "description": "Setup step 7"
+  },
+  "step8": {
+    "message": "Add server, e.g.: http://localhost:8080",
+    "description": "Setup step 8"
+  },
+  "step9": {
+    "message": "Enter username/password",
+    "description": "Setup step 9"
+  },
+  "step10": {
+    "message": "Click 'Test Connection'",
+    "description": "Setup step 10"
+  }
+}
