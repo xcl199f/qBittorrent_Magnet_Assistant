@@ -23,6 +23,10 @@
     "message": "添加失败: $1",
     "description": "添加失败详情"
   },
+  "addFailedInvalidLink": {
+    "message": "添加失败，请检查链接是否正确",
+    "description": "因链接无效导致添加失败"
+  },
   "addFailedPopup": {
     "message": "添加失败，请检查连接和设置",
     "description": "弹窗中添加失败"
@@ -152,6 +156,14 @@
   "configurationRequired": {
     "message": "需要配置",
     "description": "服务器配置需要的通知标题"
+  },
+  "configureAuthentication": {
+    "message": "配置身份验证",
+    "description": "身份验证设置部分标题"
+  },
+  "configureExtension": {
+    "message": "配置扩展",
+    "description": "扩展设置部分标题"
   },
   "confirmDelete": {
     "message": "确定要删除 \"$1\" 吗？",
@@ -345,6 +357,10 @@
     "message": "下载完成: $1",
     "description": "下载完成日志"
   },
+  "downloadTorrentFailed": {
+    "message": "种子文件下载失败",
+    "description": "下载种子文件时出现错误的提示"
+  },
   "downloading": {
     "message": "下载中",
     "description": "下载中状态"
@@ -353,15 +369,19 @@
     "message": "编辑服务器",
     "description": "编辑服务器标题"
   },
+  "enableWebUI": {
+    "message": "在 qBittorrent 中启用 WebUI",
+    "description": "启用WebUI部分标题"
+  },
   "english": {
     "message": "English"
   },
   "enterMagnetLink": {
-    "message": "请输入磁力链接",
+    "message": "请输入磁力链接或种子文件链接",
     "description": "输入磁力链接"
   },
   "enterValidMagnet": {
-    "message": "请输入有效的磁力链接（以magnet:开头）",
+    "message": "请输入有效的磁力链接（magnet:开头）或种子文件链接（.torrent结尾）",
     "description": "输入有效的磁力链接"
   },
   "enterValidUrl": {
@@ -412,6 +432,10 @@
     "message": "请先修正表单中的错误",
     "description": "保存前表单有错误时的提示"
   },
+  "forceAddingLink": {
+    "message": "正在强制添加链接到 qBittorrent...",
+    "description": "强制添加非标准链接时的通知"
+  },
   "foundCookiesCount": {
     "message": "获取到$1个Cookie",
     "description": "找到Cookie数量"
@@ -436,6 +460,10 @@
     "message": "无下载任务时",
     "description": "无下载任务时刷新间隔标签"
   },
+  "invalidLink": {
+    "message": "链接无效，请提供磁力链接或种子文件链接",
+    "description": "当用户提供的链接既不是磁力链接也不是种子文件链接时的错误提示"
+  },
   "invalidUrlFormat": {
     "message": "请输入有效的URL地址",
     "description": "URL格式验证失败时的错误提示"
@@ -457,6 +485,10 @@
   "lastUpdated": {
     "message": "更新于 $1",
     "description": "最后更新时间显示"
+  },
+  "linkType": {
+    "message": "链接类型",
+    "description": "链接类型的通用描述"
   },
   "loadFailed": {
     "message": "加载失败: $1",
@@ -518,8 +550,12 @@
     "message": "磁力链接已添加到qBittorrent",
     "description": "磁力链接添加成功"
   },
+  "magnetLinkType": {
+    "message": "磁力链接",
+    "description": "磁力链接类型"
+  },
   "magnetPlaceholder": {
-    "message": "粘贴磁力链接...",
+    "message": "粘贴磁力链接或种子文件链接...",
     "description": "磁力链接输入框占位符"
   },
   "makingRequest": {
@@ -616,6 +652,10 @@
   "noResponse": {
     "message": "没有收到响应",
     "description": "没有收到响应"
+  },
+  "noValidLink": {
+    "message": "未检测到有效的磁力链接或种子文件链接",
+    "description": "右键菜单点击时未找到有效链接的提示"
   },
   "oneMinute": {
     "message": "1分钟",
@@ -931,6 +971,50 @@
     "message": "备用速度限制：开启",
     "description": "备用速度限制开启提示"
   },
+  "step1": {
+    "message": "打开 qBittorrent → 工具 → 设置",
+    "description": "设置步骤1"
+  },
+  "step2": {
+    "message": "点击左侧边栏的 'Web UI'",
+    "description": "设置步骤2"
+  },
+  "step3": {
+    "message": "勾选 'Web 用户界面'",
+    "description": "设置步骤3"
+  },
+  "step4": {
+    "message": "设置用户名和密码",
+    "description": "设置步骤4"
+  },
+  "step5": {
+    "message": "设置端口（默认：8080, 可能被占用）",
+    "description": "设置步骤5"
+  },
+  "step6": {
+    "message": "保存设置",
+    "description": "设置步骤6"
+  },
+  "step6_5": {
+    "message": "再次打开设置 → Web UI，确保IP地址栏上方没有出现配置错误",
+    "description": "设置步骤6.5"
+  },
+  "step7": {
+    "message": "返回此设置页面",
+    "description": "设置步骤7"
+  },
+  "step8": {
+    "message": "添加服务器，比如：http://localhost:8080",
+    "description": "设置步骤8"
+  },
+  "step9": {
+    "message": "输入用户名/密码",
+    "description": "设置步骤9"
+  },
+  "step10": {
+    "message": "点击 '测试连接'",
+    "description": "设置步骤10"
+  },
   "success": {
     "message": "成功",
     "description": "成功"
@@ -975,6 +1059,30 @@
     "message": "提示",
     "description": "提示"
   },
+  "torrentAdded": {
+    "message": "种子文件已添加到 qBittorrent",
+    "description": "种子文件添加成功"
+  },
+  "torrentAddedSequential": {
+    "message": "种子文件已按顺序下载模式添加！",
+    "description": "通知：种子文件已按顺序下载模式添加"
+  },
+  "torrentAddedSuccess": {
+    "message": "种子文件已成功添加到 qBittorrent",
+    "description": "种子文件添加成功"
+  },
+  "torrentAlreadyExists": {
+    "message": "下载任务已存在",
+    "description": "下载任务已存在于 qBittorrent 中"
+  },
+  "torrentLinkType": {
+    "message": "种子文件链接",
+    "description": ".torrent文件链接类型"
+  },
+  "torrentUrlAdded": {
+    "message": "种子文件链接已添加",
+    "description": "成功添加种子文件URL的提示"
+  },
   "totalProgressTip": {
     "message": "总进度",
     "description": "任务总进度"
@@ -1006,6 +1114,10 @@
   "unnamedServer": {
     "message": "未命名服务器",
     "description": "未命名服务器的默认名称"
+  },
+  "unsupportedLinkConfirm": {
+    "message": "这看起来不是标准的磁力链接或种子文件链接。是否仍然尝试添加？",
+    "description": "链接格式不标准时的确认提示"
   },
   "urlFormatError": {
     "message": "URL格式错误: $1",
@@ -1046,61 +1158,5 @@
   "webuiSetupGuideTitle": {
     "message": "qBittorrent WebUI 设置指南",
     "description": "WebUI设置指南标题"
-  },
-  "enableWebUI": {
-    "message": "在 qBittorrent 中启用 WebUI",
-    "description": "启用WebUI部分标题"
-  },
-  "configureAuthentication": {
-    "message": "配置身份验证",
-    "description": "身份验证设置部分标题"
-  },
-  "configureExtension": {
-    "message": "配置扩展",
-    "description": "扩展设置部分标题"
-  },
-  "step1": {
-    "message": "打开 qBittorrent → 工具 → 设置",
-    "description": "设置步骤1"
-  },
-  "step2": {
-    "message": "点击左侧边栏的 'Web UI'",
-    "description": "设置步骤2"
-  },
-  "step3": {
-    "message": "勾选 'Web 用户界面'",
-    "description": "设置步骤3"
-  },
-  "step4": {
-    "message": "设置用户名和密码",
-    "description": "设置步骤4"
-  },
-  "step5": {
-    "message": "设置端口（默认：8080, 可能被占用）",
-    "description": "设置步骤5"
-  },
-  "step6": {
-    "message": "保存设置",
-    "description": "设置步骤6"
-  },
-  "step6_5": {
-    "message": "再次打开设置 → Web UI，确保IP地址栏上方没有出现配置错误",
-    "description": "设置步骤6.5"
-  },
-  "step7": {
-    "message": "返回此设置页面",
-    "description": "设置步骤7"
-  },
-  "step8": {
-    "message": "添加服务器，比如：http://localhost:8080",
-    "description": "设置步骤8"
-  },
-  "step9": {
-    "message": "输入用户名/密码",
-    "description": "设置步骤9"
-  },
-  "step10": {
-    "message": "点击 '测试连接'",
-    "description": "设置步骤10"
   }
 }

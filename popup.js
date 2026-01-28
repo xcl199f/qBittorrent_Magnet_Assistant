@@ -940,12 +940,12 @@ function getCurrentInterval(){
 
 async function quickAddMagnet() {
   const input = document.getElementById('magnetInput');
-  let magnetLink = input.value.trim();
+  let magnetLink = input.value.trim().toLowerCase();
   
   if (!magnetLink) {
     try {
-      const clipboardText = await navigator.clipboard.readText();
-      if (clipboardText.includes('magnet:')) {
+      const clipboardText = await navigator.clipboard.readText().toLowerCase();
+      if (clipboardText.startsWith('magnet:') || clipboardText.endsWith('.torrent')) {
         magnetLink = clipboardText;
       }
     } catch (error) {
@@ -957,10 +957,20 @@ async function quickAddMagnet() {
     alert(getMessage('enterMagnetLink'));
     return;
   }
+  magnetLink = magnetLink.toLowerCase();
+  const isMagnet = magnetLink.startsWith('magnet:');
+  const isTorrentUrl = magnetLink.endsWith('.torrent');
+  let confirmForce = false;
   
-  if (!magnetLink.startsWith('magnet:')) {
-    alert(getMessage('enterValidMagnet'));
-    return;
+  if (!isMagnet && !isTorrentUrl) {
+    confirmForce = confirm(
+      getMessage('unsupportedLinkConfirm') || 
+      "This doesn't look like a standard magnet link or torrent file link. Still try to add it?"
+    );
+    
+    if (!confirmForce) {
+      return;
+    }
   }
   
 
@@ -972,10 +982,12 @@ async function quickAddMagnet() {
   
   chrome.runtime.sendMessage({
     action: 'addMagnet',
-    magnetLink: magnetLink
+    magnetLink: magnetLink,
+    force: confirmForce
   }, (response) => {
     if (response?.success) {
-      this.textContent = getMessage('magnetAddedSuccess');
+      this.textContent = isMagnet ? getMessage('magnetAddedSuccess') :
+        isTorrentUrl ? getMessage('torrentAddedSuccess') : getMessage('forceAddingLink');
       this.classList.add('success');
       setTimeout(()=>{
         this.textContent = getMessage('quickAddBtn');
@@ -984,7 +996,8 @@ async function quickAddMagnet() {
       input.value = '';
       tempClipboardValue = '';
     } else {
-      alert('❌ ' + getMessage('addFailedPopup'));
+      const message = response.status === 200 ? getMessage('addFailedInvalidLink') : getMessage('addFailedPopup');
+      alert(`❌ ${response.error}\n\n${message}`);
     }
   });
 }
@@ -1289,9 +1302,9 @@ document.addEventListener('DOMContentLoaded', async() => {
   const magnetInput = document.getElementById('magnetInput');
 
   document.getElementById('hiddenInput').addEventListener('input', function() {
-    tempClipboardValue = this.value;
+    tempClipboardValue = this.value.trim().toLowerCase();
     
-    if (tempClipboardValue.trim().startsWith('magnet:')) {
+    if (tempClipboardValue.startsWith('magnet:') || tempClipboardValue.endsWith('.torrent')) {
       magnetInput.value = tempClipboardValue;
     }
     

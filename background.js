@@ -577,6 +577,10 @@ class QBittorrentClient {
       if (options.savepath) {
         formData.append('savepath', options.savepath);
       }
+
+      if (options.sequential) {
+        formData.append('sequentialDownload', 'true');
+      }
       
       const headers = {
         'Referer': this.baseURL,
@@ -591,14 +595,13 @@ class QBittorrentClient {
         method: 'POST',
         body: formData
       });
-      
-      if (response.ok) {
+      const text = await response.text();
+      if (response.ok && text.includes('Ok')) {
         return { success: true };
       } else {
-        const errorText = await response.text();
         return { 
           success: false, 
-          error: errorText, 
+          error: text, 
           status: response.status,
           csrfError: response.status === 403
         };
@@ -1100,19 +1103,28 @@ function showConfigNotification(magnetLink, isSequential, errorMessage) {
   }, 10000);
 }
 
-async function addMagnetToServer(magnetLink, options = {}) {
+async function addMagnetToServer(link, options = {}) {
   const data = await chrome.storage.sync.get(['servers', 'currentServerId']);
   let targetServerId = options.serverId || data.currentServerId;
   const server = await getServerInfo(targetServerId);
+  const isForce = options.force;
   
   if (!server || !server.qbitUrl) {
     return { success: false, error: getMessage('noAddressSet') };
+  }
+  link = link.toLowerCase();
+  const isMagnet = link.startsWith('magnet:');
+  const isTorrentUrl = link.endsWith('.torrent');
+  
+  if (!isForce && !isMagnet && !isTorrentUrl) {
+    return { success: false, error: getMessage('invalidLink') };
   }
   
   const finalSettings = {
     category: options.category || server.defaultCategory || '',
     tags: options.tags || server.defaultTags || '',
-    savepath: options.savepath || server.defaultSavePath || ''
+    savepath: options.savepath || server.defaultSavePath || '',
+    sequential: options.sequential || false
   };
   
   qbtClient.initialize(server);
@@ -1138,39 +1150,32 @@ async function addMagnetToServer(magnetLink, options = {}) {
     };
   }
   
-  const result = await qbtClient.addMagnet(magnetLink, finalSettings);
-  
-  if (result.success) {
-    let sequentialSuccess = false;
+  const result = await qbtClient.addMagnet(link, finalSettings);
+  const infohash = extractInfoHash(link);
+
+  if (result.success && infohash) {
     let retryCount = 0;
-    while (retryCount < 5) {
+    while (infohash && retryCount < 5) {
       await new Promise(resolve => setTimeout(resolve, 500));
       try {
         const torrentsResponse = await downloadManager.checkDownloadStatus(true);
         if (torrentsResponse.ok) {
           const torrents = await torrentsResponse.json();
-          const infohash = extractInfoHash(magnetLink);
-          if (infohash) {
-            const newTorrent = torrents.find(t => t.hash.toLowerCase() === infohash);
-            if (newTorrent && options.sequential) {
-              const seqResponse = await qbtClient.makeRequest('/api/v2/torrents/toggleSequentialDownload', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: `hashes=${newTorrent.hash}&value=true`
-              });
-              sequentialSuccess = seqResponse.ok;
-            }
-            if (newTorrent) { break }
-          }
+          const newTorrent = torrents.find(t => t.hash.toLowerCase() === infohash);
+          if (newTorrent) { break }
         }
       } catch (error) {
-        console.log('Toggle sequential download:', error);
+        console.log('check new task failed:', error);
       }
       retryCount++;
     }
-    if (options.sequential) {
-      result.sequentialSuccess = sequentialSuccess;
-    }
+  } else if (infohash && downloadManager.activeDownloads.has(infohash)) {
+    return { 
+      success: false, 
+      status: result.status,
+      error: getMessage('torrentAlreadyExists'),
+      alreadyExists: true 
+    };
   }
   
   return result;
@@ -1193,10 +1198,12 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  const magnetLink = info.linkUrl || info.selectionText;
-  
-  if (!magnetLink || !magnetLink.includes('magnet:')) {
-    showNotification(getMessage('tip'), getMessage('noMagnetDetected'));
+  const link = info.linkUrl || info.selectionText;
+  const isMagnet = link && link.includes('magnet:');
+  const isTorrentUrl = link && link.toLowerCase().endsWith('.torrent');
+
+  if (!isMagnet && !isTorrentUrl) {
+    showNotification(getMessage('tip'), getMessage('noValidLink'));
     return;
   }
 
@@ -1210,21 +1217,24 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   setTimeout(() => {chrome.notifications.clear(notificationId)}, 2000);
 
   try {
-    const result = await addMagnetToServer(magnetLink, {
+    const result = await addMagnetToServer(link, {
       sequential: isSequential
     });
       
     if (result.success) {
-      if (isSequential && result.sequentialSuccess) {
+      if (isSequential) { // && result.sequentialSuccess
         showNotification(getMessage('success'), getMessage('magnetAddedSequential'));
-      } else if (isSequential) {
-        showNotification(getMessage('warning'), getMessage('magnetAdded') + "\n" + getMessage('sequentialSetFailed'));
       } else {
-        showNotification(getMessage('success'), getMessage('magnetAdded'));
+        const magnetAdded = isMagnet ? getMessage('magnetAdded') : getMessage('torrentAdded');
+        if (isSequential) {
+          showNotification(getMessage('warning'), magnetAdded + "\n" + getMessage('sequentialSetFailed'));
+        } else {
+          showNotification(getMessage('success'), magnetAdded);
+        }
       }
     } else {
       if (result.error === getMessage('noAddressSet') || result.connectionFailed) {
-        showConfigNotification(magnetLink, isSequential, result.error);
+        showConfigNotification(link, isSequential, result.error);
       } else {
         showNotification(getMessage('failed'), getMessage('addFailedDetail', [result.error || getMessage('unknownError')]));
       }
@@ -1549,7 +1559,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     addMagnet: async () => {
       const result = await addMagnetToServer(request.magnetLink, {
-        sequential: request.sequential || false
+        sequential: request.sequential || false,
+        force: request.force || false
       });
       sendResponse(result);
     },

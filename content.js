@@ -53,7 +53,7 @@ function scanPageForMagnets() {
 
 function extractSizeInfo(element) {
   let current = element;
-  const sizeRegex = /(?:[\(\[]([\d.]+)[\s\u00A0]*([KMGTP])(?![a-zA-Z])[\)\]]|([\d.]+)[\s\u00A0]*([KMGTP](?:B|iB)))/gi;
+  const sizeRegex = /(?:[\(\[]([\d.]+)[\s\u00A0]*([KMGT])(?![a-zA-Z])[\)\]]|([\d.]+)[\s\u00A0]*([KMGTP](?:B|iB)))/gi;
   const sizeSelectors = '.size-tag, [class*="size"], [class*="Size"], [id*="size"], [id*="Size"]';
 
   for (let i = 0, j = 0; i < 4, j < 10; i++, j++) {

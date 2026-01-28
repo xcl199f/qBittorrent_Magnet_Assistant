@@ -23,6 +23,10 @@
     "message": "Add failed: $1",
     "description": "Add failed detail"
   },
+  "addFailedInvalidLink": {
+    "message": "Add failed, please check if the link is correct",
+    "description": "Add failed due to invalid link"
+  },
   "addFailedPopup": {
     "message": "Add failed, please check connection and settings",
     "description": "Add failed in popup"
@@ -152,6 +156,14 @@
   "configurationRequired": {
     "message": "Configuration Required",
     "description": "Title for notification when server configuration is needed"
+  },
+  "configureAuthentication": {
+    "message": "Configure Authentication",
+    "description": "Section title for authentication setup"
+  },
+  "configureExtension": {
+    "message": "Configure Extension",
+    "description": "Section title for extension setup"
   },
   "confirmDelete": {
     "message": "Are you sure you want to delete \"$1\"?",
@@ -345,6 +357,10 @@
     "message": "Download completed: $1",
     "description": "Download completed log"
   },
+  "downloadTorrentFailed": {
+    "message": "Failed to download torrent file",
+    "description": "Error prompt when downloading torrent file fails"
+  },
   "downloading": {
     "message": "Downloading",
     "description": "Downloading status"
@@ -353,15 +369,19 @@
     "message": "Edit Server",
     "description": "Edit server title"
   },
+  "enableWebUI": {
+    "message": "Enable WebUI in qBittorrent",
+    "description": "Section title for enabling WebUI"
+  },
   "english": {
     "message": "English"
   },
   "enterMagnetLink": {
-    "message": "Please enter magnet link",
+    "message": "Please enter a magnet link or torrent URL",
     "description": "Enter magnet link"
   },
   "enterValidMagnet": {
-    "message": "Please enter a valid magnet link (starting with magnet:)",
+    "message": "Please enter a valid magnet link(starting with magnet:) or torrent URL(ending with .torrent)",
     "description": "Enter valid magnet link"
   },
   "enterValidUrl": {
@@ -412,6 +432,10 @@
     "message": "Please fix errors in the form before saving",
     "description": "Prompt when there are errors in the form before saving"
   },
+  "forceAddingLink": {
+    "message": "Forcing add link to qBittorrent...",
+    "description": "Notification when forcing addition of non-standard link"
+  },
   "foundCookiesCount": {
     "message": "Found $1 cookies",
     "description": "Found cookies count"
@@ -436,6 +460,10 @@
     "message": "Refresh interval when idle",
     "description": "Inactive refresh interval label"
   },
+  "invalidLink": {
+    "message": "Invalid link, please provide a magnet link or torrent file link",
+    "description": "Error message when the provided link is neither a magnet link nor a torrent file link"
+  },
   "invalidUrlFormat": {
     "message": "Please enter a valid URL address",
     "description": "Error message when URL format validation fails"
@@ -457,6 +485,10 @@
   "lastUpdated": {
     "message": "Updated $1",
     "description": "Last update time display"
+  },
+  "linkType": {
+    "message": "Link Type",
+    "description": "General description of link type"
   },
   "loadFailed": {
     "message": "Load failed: $1",
@@ -518,8 +550,12 @@
     "message": "Magnet link added to qBittorrent",
     "description": "Magnet added successfully"
   },
+  "magnetLinkType": {
+    "message": "Magnet Link",
+    "description": "Magnet link type"
+  },
   "magnetPlaceholder": {
-    "message": "Paste magnet link...",
+    "message": "Paste magnet link or torrent URL...",
     "description": "Magnet input placeholder"
   },
   "makingRequest": {
@@ -616,6 +652,10 @@
   "noResponse": {
     "message": "No response received",
     "description": "No response"
+  },
+  "noValidLink": {
+    "message": "No valid magnet link or torrent file link detected",
+    "description": "Prompt when no valid link is found on right-click"
   },
   "oneMinute": {
     "message": "1 minute",
@@ -931,6 +971,50 @@
     "message": "Alternative Speed Limit: ON",
     "description": "Alternative speed limit ON tooltip"
   },
+  "step1": {
+    "message": "Open qBittorrent → Tools → Options",
+    "description": "Setup step 1"
+  },
+  "step2": {
+    "message": "Click 'Web UI' on left sidebar",
+    "description": "Setup step 2"
+  },
+  "step3": {
+    "message": "Check 'Enable Web User Interface'",
+    "description": "Setup step 3"
+  },
+  "step4": {
+    "message": "Set username and password",
+    "description": "Setup step 4"
+  },
+  "step5": {
+    "message": "Set port (default: 8080, may be occupied)",
+    "description": "Setup step 5"
+  },
+  "step6": {
+    "message": "Save Settings",
+    "description": "Setup step 6"
+  },
+  "step6_5": {
+    "message": "Reopen Options → Web UI, ensure no configuration error appears above IP address field",
+    "description": "Setup step 6.5"
+  },
+  "step7": {
+    "message": "Return to this settings page",
+    "description": "Setup step 7"
+  },
+  "step8": {
+    "message": "Add server, e.g.: http://localhost:8080",
+    "description": "Setup step 8"
+  },
+  "step9": {
+    "message": "Enter username/password",
+    "description": "Setup step 9"
+  },
+  "step10": {
+    "message": "Click 'Test Connection'",
+    "description": "Setup step 10"
+  },
   "success": {
     "message": "Success",
     "description": "Success"
@@ -975,6 +1059,30 @@
     "message": "Tip",
     "description": "Tip"
   },
+  "torrentAdded": {
+    "message": "Torrent file added to qBittorrent",
+    "description": "Torrent file added"
+  },
+  "torrentAddedSequential": {
+    "message": "Torrent file added as sequential download!",
+    "description": "Notification: Torrent file added as sequential download"
+  },
+  "torrentAddedSuccess": {
+    "message": "Torrent file added to qBittorrent",
+    "description": "Torrent file added successfully"
+  },
+  "torrentAlreadyExists": {
+    "message": "Download task already exists",
+    "description": "Error when download task already exists in qBittorrent"
+  },
+  "torrentLinkType": {
+    "message": "Torrent File Link",
+    "description": ".torrent file link type"
+  },
+  "torrentUrlAdded": {
+    "message": "Torrent file URL added",
+    "description": "Prompt for successfully adding torrent file URL"
+  },
   "totalProgressTip": {
     "message": "Total progress",
     "description": "Task total progress"
@@ -1006,6 +1114,10 @@
   "unnamedServer": {
     "message": "Unnamed Server",
     "description": "Default name for unnamed server"
+  },
+  "unsupportedLinkConfirm": {
+    "message": "This doesn't look like a standard magnet link or torrent file link. Still try to add it?",
+    "description": "Confirmation prompt when link format is not standard"
   },
   "urlFormatError": {
     "message": "URL format error: $1",
@@ -1043,64 +1155,8 @@
     "message": "http://localhost:8080",
     "description": "WebUI address placeholder"
   },
- "webuiSetupGuideTitle": {
+  "webuiSetupGuideTitle": {
     "message": "qBittorrent WebUI Setup Guide",
     "description": "Title for WebUI setup guide"
-  },
-  "enableWebUI": {
-    "message": "Enable WebUI in qBittorrent",
-    "description": "Section title for enabling WebUI"
-  },
-  "configureAuthentication": {
-    "message": "Configure Authentication",
-    "description": "Section title for authentication setup"
-  },
-  "configureExtension": {
-    "message": "Configure Extension",
-    "description": "Section title for extension setup"
-  },
-  "step1": {
-    "message": "Open qBittorrent → Tools → Options",
-    "description": "Setup step 1"
-  },
-  "step2": {
-    "message": "Click 'Web UI' on left sidebar",
-    "description": "Setup step 2"
-  },
-  "step3": {
-    "message": "Check 'Enable Web User Interface'",
-    "description": "Setup step 3"
-  },
-  "step4": {
-    "message": "Set username and password",
-    "description": "Setup step 4"
-  },
-  "step5": {
-    "message": "Set port (default: 8080, may be occupied)",
-    "description": "Setup step 5"
-  },
-  "step6": {
-    "message": "Save Settings",
-    "description": "Setup step 6"
-  },
-  "step6_5": {
-    "message": "Reopen Options → Web UI, ensure no configuration error appears above IP address field",
-    "description": "Setup step 6.5"
-  },
-  "step7": {
-    "message": "Return to this settings page",
-    "description": "Setup step 7"
-  },
-  "step8": {
-    "message": "Add server, e.g.: http://localhost:8080",
-    "description": "Setup step 8"
-  },
-  "step9": {
-    "message": "Enter username/password",
-    "description": "Setup step 9"
-  },
-  "step10": {
-    "message": "Click 'Test Connection'",
-    "description": "Setup step 10"
   }
 }
