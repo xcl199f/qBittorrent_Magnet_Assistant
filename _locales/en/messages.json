@@ -241,6 +241,34 @@
     "message": "Send to qBittorrent",
     "description": "Context menu title"
   },
+  "normalSendButton": {
+    "message": "Send to qBit",
+    "description": "Floating button: Send to qBittorrent"
+  },
+  "sequentialSendButton": {
+    "message": "Sequential",
+    "description": "Floating button: Send with sequential download"
+  },
+  "enableFloatingBtn": {
+      "message": "Floating Button in HTML",
+      "description": "Enable floating button on webpages"
+  },
+  "openSettingsPage": {
+      "message": "Open Settings Page",
+      "description": "Open settings page from popup menu"
+  },
+  "floatingButtonEnabled": {
+      "message": "Floating Button Enabled",
+      "description": "Floating button enabled notification"
+  },
+  "floatingButtonDisabled": {
+      "message": "Floating Button Disabled",
+      "description": "Floating button disabled notification"
+  },
+  "floatingBtnTooltip": {
+    "message": "Show send button when hovering over magnet links",
+    "description": "Floating button toggle tooltip"
+  },
   "cookieManager": {
     "message": "Cookie Management",
     "description": "Cookie management"
@@ -397,7 +425,7 @@
     "description": "Error"
   },
   "extensionDescription": {
-    "message": "Remotely manage qBittorrent: monitor progress, pause/resume tasks, and add magnet links—all from your browser toolbar.",
+    "message": "Remote qBittorrent manager. Monitor progress, control tasks & add magnets from toolbar. Needs qBittorrent app.",
     "description": "Extension description"
   },
   "extensionInitialized": {
@@ -581,7 +609,7 @@
     "message": "$1 minutes ago",
     "description": "Minutes ago time indicator"
   },
-  "needsAuth": {
+  "needsAuthStatus": {
     "message": "Needs Auth",
     "description": "Server status: needs authentication"
   },

@@ -1,25 +1,25 @@
-let getMessage = function(key, substitutions = []) {
+let getMessage = function (key, substitutions = []) {
   return chrome.i18n.getMessage(key, substitutions);
 };
 
 let customI18nDefined = false;
 
-if (typeof customI18n !== 'undefined' && customI18n && 
-  typeof customI18n.init === 'function' && 
+if (typeof customI18n !== 'undefined' && customI18n &&
+  typeof customI18n.init === 'function' &&
   typeof customI18n.getMessage === 'function') {
 
   customI18nDefined = true;
-  getMessage = function(key, substitutions = []) {
+  getMessage = function (key, substitutions = []) {
     return customI18n.getMessage(key, substitutions);
   };
 }
 
 function extractHostname(url) {
   if (!url) return '';
-  
+
   let hostname = url.replace(/^https?:\/\//, '');
   hostname = hostname.split('/')[0].split(':')[0];
-  
+
   return hostname || url;
 }
 
@@ -56,12 +56,12 @@ async function localizePage() {
 async function saveRefreshInterval() {
   const activeValue = document.getElementById('activeRefreshSlider').value;
   const inactiveValue = document.getElementById('inactiveRefreshSlider').value;
-  
+
   await chrome.storage.sync.set({
     activeRefreshInterval: activeValue,
     inactiveRefreshInterval: inactiveValue
   });
-  
+
   chrome.runtime.sendMessage({
     action: 'refreshIntervalUpdate'
   });
@@ -89,18 +89,18 @@ async function initRefreshSliders() {
   }
 
   const saveActiveInterval = debounce((value) => {
-    chrome.storage.sync.set({activeRefreshInterval: value});
+    chrome.storage.sync.set({ activeRefreshInterval: value });
   }, 500);
 
   const saveInactiveInterval = debounce((value) => {
-    chrome.storage.sync.set({inactiveRefreshInterval: value});
+    chrome.storage.sync.set({ inactiveRefreshInterval: value });
   }, 500);
 
   activeSlider.addEventListener('input', () => {
     activeValue.textContent = activeSlider.value;
     saveActiveInterval(activeSlider.value);
   });
-  
+
   inactiveSlider.addEventListener('input', () => {
     inactiveValue.textContent = inactiveSlider.value;
     if (inactiveSlider.value == 0) {
@@ -117,7 +117,7 @@ function showMessage(message, type, timeout = 5000) {
   const resultDiv = document.getElementById('testResult');
   resultDiv.textContent = message;
   resultDiv.className = type;
-  
+
   clearTimeout(resultDivTimer);
   resultDivTimer = setTimeout(() => {
     resultDiv.className = '';
@@ -134,11 +134,11 @@ async function loadServers() {
   servers = data.servers || [];
 
   currentServerId = data.currentServerId || null;
-  
+
   if (currentServerId) {
     editingServerId = currentServerId;
   }
-  
+
   loadServerForEditing(editingServerId);
   serverStatusCache.clear();
   await updateServerList();
@@ -146,15 +146,15 @@ async function loadServers() {
   const testPromises = servers.map(async (server) => {
     try {
       const result = await testServerConnection(server);
-      const status = result.success ? 
-        (result.authenticated || !result.canLogin ? 'connected' : 'needs-auth') : 
+      const status = result.success ?
+        (result.authenticated || !result.canLogin ? 'connected' : 'needsAuth') :
         'disconnected';
       updateServerItemStatus(server.id, status);
     } catch (error) {
       updateServerItemStatus(server.id, 'disconnected');
     }
   });
-  
+
   Promise.all(testPromises);
 
   return servers;
@@ -162,20 +162,20 @@ async function loadServers() {
 
 async function updateSelectedServerStatus(serverId) {
   const server = servers.find(s => s.id === serverId);
-  if (!server) return {success: false};
-  
+  if (!server) return { success: false };
+
   try {
     updateServerItemStatus(serverId, 'checking');
     const result = await testServerConnection(server);
-    const newStatus = result.success ? 
-      (result.authenticated || !result.canLogin ? 'connected' : 'needs-auth') : 
+    const newStatus = result.success ?
+      (result.authenticated || !result.canLogin ? 'connected' : 'needsAuth') :
       'disconnected';
-    
+
     updateServerItemStatus(serverId, newStatus);
     return result;
   } catch (error) {
     updateServerItemStatus(serverId, 'disconnected');
-    return {success: false}
+    return { success: false }
   }
 }
 
@@ -183,7 +183,7 @@ function updateServerItemStatus(serverId, status) {
   serverStatusCache.set(serverId, status);
   const serverItem = document.querySelector(`[data-server-id="${serverId}"]`);
   if (!serverItem) return;
-  
+
   const statusBadge = serverItem.querySelector('.status-badge');
   if (statusBadge) {
     statusBadge.textContent = getMessage(status + 'Status') || status;
@@ -194,14 +194,14 @@ function updateServerItemStatus(serverId, status) {
 async function updateServerList() {
   const serverList = document.getElementById('serverList');
   if (!serverList) return;
-  
+
   serverList.innerHTML = '';
-  
+
   servers.forEach(server => {
     const serverItem = document.createElement('div');
     serverItem.className = 'server-item';
     serverItem.dataset.serverId = server.id;
-    
+
     if (server.id === editingServerId) {
       serverItem.classList.add('active');
     }
@@ -226,21 +226,21 @@ async function updateServerList() {
         </label>
       </div>
     `;
-    
+
     serverItem.addEventListener('click', async (e) => {
-      if (e.target.classList.contains('logout-btn')) {
+      if (e.target.className.match(/logout-btn|toggle-/)) {
         return;
       }
-      
+
       document.querySelectorAll('.server-item.active').forEach(item => {
         item.classList.remove('active');
       });
       serverItem.classList.add('active');
       setCurrentServer(server.id);
     });
-    
+
     serverList.appendChild(serverItem);
-    
+
     const webuiIcon = serverItem.querySelector('.webui-icon');
     if (webuiIcon) {
       webuiIcon.addEventListener('click', (e) => {
@@ -252,7 +252,7 @@ async function updateServerList() {
       });
     }
   });
-  
+
   setupAutoLoginToggles();
 
   setTimeout(() => {
@@ -270,54 +270,54 @@ async function updateServerList() {
 function setupAutoLoginToggles() {
   document.querySelectorAll('.toggle-checkbox').forEach(checkbox => {
     checkbox.addEventListener('change', async (e) => {
+      e.stopPropagation();
       const serverId = checkbox.dataset.serverId;
       const server = servers.find(s => s.id === serverId);
-      
+
       if (!server) return;
-      
+
       server.autoLogin = checkbox.checked;
       await chrome.storage.sync.set({ servers });
-      
+
       if (!checkbox.checked) {
         try {
           const originalServerId = currentServerId;
-          
+
           await chrome.storage.sync.set({
             qbitUrl: server.qbitUrl,
             qbitUsername: server.qbitUsername || '',
             qbitPassword: server.qbitPassword || ''
           });
-          
+
           await chrome.runtime.sendMessage({
             action: 'logout',
+            serverId: serverId,
             serverUrl: server.qbitUrl
           });
-          
+
           updateSelectedServerStatus(serverId);
-          
+
           if (originalServerId !== serverId) {
             await chrome.runtime.sendMessage({
               action: 'switchServer',
               serverId: originalServerId
             });
           }
-          
+
         } catch (error) {
           console.error('logout failed:', error);
         }
       } else {
         try {
           showMessage(getMessage('testingConnection'), 'info');
-          
+
           const result = await testServerConnection(server);
-          const newStatus = result.success ? 
-            (result.authenticated || !result.canLogin ? 'connected' : 'needs-auth') : 
+          const newStatus = result.success ?
+            (result.authenticated || !result.canLogin ? 'connected' : 'needsAuth') :
             'disconnected';
           updateServerItemStatus(serverId, newStatus);
-          
-          if (result.success && result.authenticated) {
-            showMessage(getMessage('connectionSuccess'), 'success');
-          }
+
+          showConnectionResult(result);
         } catch (error) {
           updateServerItemStatus(serverId, 'disconnected');
         }
@@ -328,7 +328,7 @@ function setupAutoLoginToggles() {
 
 function loadServerForEditing(serverId) {
   const server = servers.find(s => s.id === serverId);
-  
+
   if (!server) {
     resetForm();
     editingServerId = null;
@@ -338,11 +338,11 @@ function loadServerForEditing(serverId) {
     document.getElementById('serverSettingsForm').classList.remove('hidden');
     return;
   }
-  
+
   editingServerId = serverId;
-  
+
   document.getElementById('currentServerTitle').textContent = getMessage('editServer') + ': ' + (server.name || extractHostname(server.qbitUrl) || getMessage('unnamedServer'));
-  
+
   document.getElementById('serverId').value = server.id;
   document.getElementById('serverName').value = server.name || '';
   document.getElementById('qbitUrl').value = server.qbitUrl || '';
@@ -351,7 +351,7 @@ function loadServerForEditing(serverId) {
   document.getElementById('defaultCategory').value = server.defaultCategory || '';
   document.getElementById('defaultSavePath').value = server.defaultSavePath || '';
   document.getElementById('defaultDeleteFiles').checked = server.defaultDeleteFiles || false;
-  
+
   document.getElementById('serverSettingsForm').classList.remove('hidden');
   document.getElementById('saveServer').textContent = getMessage('saveServer');
   document.getElementById('deleteServer').classList.remove('hidden');
@@ -378,7 +378,7 @@ async function testServerConnection(server) {
       };
     }
 
-    const response = await chrome.runtime.sendMessage({ 
+    const response = await chrome.runtime.sendMessage({
       action: server.id === currentServerId ? 'testConnection' : 'testServerConnectionDirect',
       server: {
         qbitUrl: server.qbitUrl,
@@ -386,7 +386,7 @@ async function testServerConnection(server) {
         qbitPassword: server.qbitPassword || ''
       }
     });
-    
+
     return response;
   } catch (error) {
     return {
@@ -400,7 +400,7 @@ function normalizeUrl(url) {
   if (!url) return '';
   try {
     const hasProtocol = url.match(/^.*:\/\//);
-    
+
     if (!hasProtocol) {
       url = 'http://' + url.trim();
     }
@@ -420,14 +420,14 @@ function normalizeUrl(url) {
 
 function validateUrl(url) {
   if (!url) return false;
-  
+
   try {
     const hasProtocol = url.match(/^.*:\/\//);
-    
+
     if (!hasProtocol) {
       url = 'http://' + url;
     }
-    
+
     const urlObj = new URL(url);
 
 
@@ -440,9 +440,9 @@ function validateUrl(url) {
 async function saveCurrentServer() {
   const nameInput = document.getElementById('serverName');
   const urlInput = document.getElementById('qbitUrl');
-  
-  if (nameInput.classList.contains('error-border') || 
-      urlInput.classList.contains('error-border')) {
+
+  if (nameInput.classList.contains('error-border') ||
+    urlInput.classList.contains('error-border')) {
     showMessage(getMessage('fixErrorsBeforeSave'), 'error');
     return false;
   }
@@ -458,7 +458,7 @@ async function saveCurrentServer() {
     defaultDeleteFiles: document.getElementById('defaultDeleteFiles').checked
   };
 
-  const isInvalidServerName = serverData.name !== '' && servers.find(s => 
+  const isInvalidServerName = serverData.name !== '' && servers.find(s =>
     s.name === serverData.name && s.id !== serverData.id
   );
 
@@ -466,14 +466,14 @@ async function saveCurrentServer() {
     showMessage(getMessage('serverNameDuplicate'), 'error');
     return false;
   }
-  
+
   if (!serverData.qbitUrl) {
     showMessage(getMessage('enterWebuiAddress'), 'error');
     return false;
   }
 
   const normalizedUrl = normalizeUrl(serverData.qbitUrl);
-  const sameUrl = servers.find(s => 
+  const sameUrl = servers.find(s =>
     s.qbitUrl === normalizedUrl && s.id !== serverData.id
   );
 
@@ -481,18 +481,18 @@ async function saveCurrentServer() {
     showMessage(getMessage('serverUrlDuplicate'), 'error');
     return false;
   }
-  
+
   const savedServerId = serverData.id;
   try {
     showMessage(getMessage('serverSaved'), 'success');
-    
+
     const isNewServer = !servers.find(s => s.id === serverData.id);
-    
+
     if (isNewServer) {
       servers.push(serverData);
       currentServerId = serverData.id;
       await chrome.storage.sync.set({ currentServerId, servers });
-      
+
       await chrome.runtime.sendMessage({
         action: 'switchServer',
         serverId: serverData.id
@@ -502,10 +502,10 @@ async function saveCurrentServer() {
       servers[index] = serverData;
       await chrome.storage.sync.set({ servers });
     }
-    
+
     editingServerId = savedServerId;
-    
-    if(isNewServer){
+
+    if (isNewServer) {
       await loadServers();
     } else {
       const serverItem = document.querySelector(`[data-server-id="${serverData.id}"]`);
@@ -513,10 +513,10 @@ async function saveCurrentServer() {
         const serverNameEl = serverItem.querySelector('.server-name');
         const serverUrlEl = serverItem.querySelector('.server-url');
         const webuiIcon = serverItem.querySelector('.webui-icon');
-        
+
         if (serverNameEl) {
-          serverNameEl.textContent = serverData.name || 
-            extractHostname(serverData.qbitUrl) || 
+          serverNameEl.textContent = serverData.name ||
+            extractHostname(serverData.qbitUrl) ||
             getMessage('unnamedServer');
         }
         if (serverUrlEl) {
@@ -537,7 +537,7 @@ async function saveCurrentServer() {
 
 async function deleteCurrentServer() {
   if (!editingServerId) return;
-  
+
   const server = servers.find(s => s.id === editingServerId);
   if (!server) {
     showMessage(getMessage('serverNotFound'), 'error');
@@ -548,16 +548,16 @@ async function deleteCurrentServer() {
   if (!confirm(getMessage('confirmDeleteServer', [serverName]))) {
     return;
   }
-  
+
   try {
     const response = await chrome.runtime.sendMessage({
       action: 'deleteServer',
       serverId: editingServerId
     });
-    
+
     if (response?.success) {
       showMessage(getMessage('serverDeleted'), 'success');
-      
+
       editingServerId = null;
       await loadServers();
       document.getElementById('serverSettingsForm').classList.add('hidden');
@@ -575,7 +575,7 @@ async function setCurrentServer(serverId) {
       action: 'switchServer',
       serverId: serverId
     });
-    
+
     if (response?.success) {
       editingServerId = serverId;
       currentServerId = serverId;
@@ -594,15 +594,15 @@ async function setCurrentServer(serverId) {
 function blinkInputWithCSS(inputId, times = 3) {
   const input = document.getElementById(inputId);
   if (!input) return;
-  
+
   let count = 0;
-  
+
   function animate() {
     input.classList.add('blinking');
-    
+
     setTimeout(() => {
       input.classList.remove('blinking');
-      
+
       count++;
       if (count < times) {
         setTimeout(animate, 100);
@@ -611,18 +611,28 @@ function blinkInputWithCSS(inputId, times = 3) {
       }
     }, 500);
   }
-  
+
   animate();
+}
+
+function checkServerNameDuplicate(name, excludeId = null) {
+  const trimmedName = name.trim();
+  if (trimmedName === '') return false;
+
+  return servers.some(server =>
+    server.name === trimmedName &&
+    server.id !== excludeId
+  );
 }
 
 function setupRealTimeValidation() {
   const nameInput = document.getElementById('serverName');
   const urlInput = document.getElementById('qbitUrl');
-  
+
   nameInput.addEventListener('input', debounce(() => {
     const name = nameInput.value.trim();
     const serverId = document.getElementById('serverId').value;
-    
+
     if (name && checkServerNameDuplicate(name, serverId || null)) {
       nameInput.classList.add('error-border');
       showMessage(getMessage('serverNameDuplicate'), 'error');
@@ -630,7 +640,7 @@ function setupRealTimeValidation() {
       nameInput.classList.remove('error-border');
     }
   }, 300));
-  
+
   urlInput.addEventListener('input', debounce(() => {
     const url = urlInput.value.trim();
     if (url && !normalizeUrl(url)) {
@@ -664,6 +674,34 @@ function setupHelpSystem() {
   });
 }
 
+function showConnectionResult(result) {
+  if (result.success && !result.error) {
+    let message = '';
+
+    if (result.version) {
+      message += `✅ qBittorrent ${result.version}`;
+    }
+
+    if (result.authenticated) {
+      message += ' ✅ ' + getMessage('authSuccessful');
+    } else if (!result.canLogin) {
+      message += ' ℹ️ ' + getMessage('anonymousAccess');
+    } else if (result.authenticated === false) {
+      message += ' ⚠️ ' + getMessage('authRequired');
+      blinkInputWithCSS('qbitPassword');
+      blinkInputWithCSS('qbitUsername');
+    }
+
+    if (result.csrfEnabled) {
+      message += ' ℹ️ ' + getMessage('csrfEnabled');
+    }
+
+    showMessage(message.trim(), result.error ? 'error' : result.authenticated ? 'success' : 'info');
+  } else {
+    showMessage(`❌ ${getMessage('connectionFailed')}: ${result.error || getMessage('unknownError')}`, 'error', 20000);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   customI18nDefined && await customI18n.init();
   localizePage();
@@ -675,7 +713,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (languageSelect) {
     const result = await chrome.storage.sync.get('selectedLanguage');
     languageSelect.value = result.selectedLanguage || 'auto';
-    
+
     languageSelect.addEventListener('change', async () => {
       chrome.storage.sync.set({ selectedLanguage: languageSelect.value });
       customI18nDefined && await customI18n.setLanguage(languageSelect.value);
@@ -685,7 +723,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       showMessage(getMessage('languageChanged'), 'success');
     });
   }
-  
+
   loadServers().then(servers => {
     if (servers.length === 0) {
       const helpOverlay = document.getElementById('helpOverlay');
@@ -701,15 +739,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('deleteServer').classList.add('hidden');
     document.getElementById('serverSettingsForm').classList.remove('hidden');
   });
-  
+
   document.getElementById('testConnection').addEventListener('click', async () => {
-    if(!await saveCurrentServer()) {return};
+    if (!await saveCurrentServer()) { return };
 
     if (!editingServerId) {
       showMessage(getMessage('selectServerFirst'), 'error');
       return;
     }
-    
+
     const server = servers.find(s => s.id === editingServerId);
     if (!server) {
       showMessage(getMessage('serverNotFound'), 'error');
@@ -718,34 +756,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     showMessage(getMessage('testingConnection'), 'info');
     const result = await updateSelectedServerStatus(server.id);
-    
-    if (result.success && !result.error) {
-      let message = '';
-      
-      if (result.version) {
-        message += `✅ qBittorrent ${result.version}`;
-      }
-      
-      if (result.authenticated) {
-        message += ' ✅ ' + getMessage('authSuccessful');
-      } else if (!result.canLogin) {
-        message += ' ℹ️ ' + getMessage('anonymousAccess');
-      } else if (result.authenticated === false) {
-        message += ' ⚠️ ' + getMessage('authRequired');
-        blinkInputWithCSS('qbitPassword');
-        blinkInputWithCSS('qbitUsername');
-      }
-            
-      if (result.csrfEnabled) {
-        message += ' ℹ️ ' + getMessage('csrfEnabled');
-      }
-
-      showMessage(message.trim(), result.error ? 'error' : result.authenticated ? 'success' : 'info');
-    } else {
-      showMessage(`❌ ${getMessage('connectionFailed')}: ${result.error || getMessage('unknownError')}`, 'error', 20000);
-    }
+    showConnectionResult(result);
   });
-  
+
   document.getElementById('saveServer').addEventListener('click', saveCurrentServer);
   document.getElementById('deleteServer').addEventListener('click', deleteCurrentServer);
 

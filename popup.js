@@ -1,25 +1,25 @@
-let getMessage = function(key, substitutions = []) {
+let getMessage = function (key, substitutions = []) {
   return chrome.i18n.getMessage(key, substitutions);
 };
 
 let customI18nDefined = false;
 
-if (typeof customI18n !== 'undefined' && customI18n && 
-  typeof customI18n.init === 'function' && 
+if (typeof customI18n !== 'undefined' && customI18n &&
+  typeof customI18n.init === 'function' &&
   typeof customI18n.getMessage === 'function') {
 
   customI18nDefined = true;
-  getMessage = function(key, substitutions = []) {
+  getMessage = function (key, substitutions = []) {
     return customI18n.getMessage(key, substitutions);
   };
 }
 
 function extractHostname(url) {
   if (!url) return '';
-  
+
   let hostname = url.replace(/^https?:\/\//, '');
   hostname = hostname.split('/')[0].split(':')[0];
-  
+
   return hostname || url;
 }
 
@@ -32,9 +32,9 @@ async function loadServers() {
   const data = await chrome.storage.sync.get(['servers', 'currentServerId']);
   servers = data.servers || [];
   currentServerId = data.currentServerId || null;
-  
+
   await updateServerDropdown();
-  
+
   if (currentServerId) {
     currentServer = servers.find(s => s.id === currentServerId);
     return currentServer;
@@ -46,26 +46,26 @@ async function checkAllServersStatusInDropdown() {
   for (const server of servers) {
     const dropdownItem = document.querySelector(`.dropdown-item[data-server-id="${server.id}"]`);
     if (!dropdownItem) continue;
-    
+
     const statusBadge = dropdownItem.querySelector('.dropdown-status');
     if (statusBadge) {
       statusBadge.textContent = getMessage('checkingStatus');
       statusBadge.className = 'dropdown-status checking';
       setServerStatus(server.id, 'checking');
     }
-    
+
     try {
       let status = 'disconnected';
 
       checkServerConnection(server.id).then(result => {
-        status = result.success ? 
-          (result.authenticated || !result.canLogin ? 'connected' : 'needs-auth') : 
+        status = result.success ?
+          (result.authenticated || !result.canLogin ? 'connected' : 'needsAuth') :
           'disconnected';
-        
+        console.log(result.authenticated, result.canLogin, status)
         setServerStatus(server.id, status);
-        if (server.id === currentServerId) { 
+        if (server.id === currentServerId) {
           updateCurrentServerStatus(status);
-        } 
+        }
         if (statusBadge) {
           statusBadge.textContent = getMessage(status + 'Status');
           statusBadge.className = `dropdown-status ${status}`;
@@ -84,11 +84,11 @@ async function checkAllServersStatusInDropdown() {
 function initCustomSelect() {
   const selectHeader = document.getElementById('selectHeader');
   const selectDropdown = document.getElementById('selectDropdown');
-  
+
   selectHeader.addEventListener('click', (e) => {
     e.stopPropagation();
     const isOpen = selectHeader.parentElement.classList.contains('open');
-    
+
     if (isOpen) {
       selectHeader.parentElement.classList.remove('open');
     } else {
@@ -98,11 +98,11 @@ function initCustomSelect() {
       });
     }
   });
-  
+
   document.addEventListener('click', () => {
     selectHeader.parentElement.classList.remove('open');
   });
-  
+
   selectDropdown.addEventListener('click', (e) => {
     e.stopPropagation();
   });
@@ -112,11 +112,11 @@ async function updateServerDropdown() {
   const dropdownList = document.getElementById('serverDropdownList');
   const selectedServerText = document.getElementById('selectedServerText');
   const currentServerStatus = document.getElementById('currentServerStatus');
-  
+
   if (!dropdownList) return;
-  
+
   dropdownList.innerHTML = '';
-  
+
   if (currentServer) {
     const displayName = currentServer.name || extractHostname(currentServer.qbitUrl) || getMessage('unnamedServer');
     selectedServerText.textContent = displayName;
@@ -127,19 +127,19 @@ async function updateServerDropdown() {
     currentServerStatus.textContent = getMessage('unknownStatus');
     currentServerStatus.className = 'status-area unknown';
 
-    if(servers.length === 0){
+    if (servers.length === 0) {
       const dropdownItem = document.createElement('div');
       dropdownItem.className = 'dropdown-item';
       const displayName = getMessage('addServer');
-    
+
       dropdownItem.innerHTML = `
         <span class="server-name">${displayName}</span>
       `;
       dropdownList.appendChild(dropdownItem);
-      dropdownItem.addEventListener('click', async () => {document.getElementById('openOptions').click();});
+      dropdownItem.addEventListener('click', async () => { document.getElementById('openOptions').click(); });
     }
   }
-  
+
   servers.forEach(server => {
     const dropdownItem = document.createElement('div');
     dropdownItem.className = 'dropdown-item';
@@ -147,19 +147,19 @@ async function updateServerDropdown() {
       dropdownItem.classList.add('selected');
     }
     dropdownItem.dataset.serverId = server.id;
-    
+
     const displayName = server.name || extractHostname(server.qbitUrl) || getMessage('unnamedServer');
-    
+
     dropdownItem.innerHTML = `
       <span class="server-name">${displayName}</span>
       <span class="dropdown-status checking">${getMessage('checkingStatus')}</span>
     `;
-    
+
     dropdownItem.addEventListener('click', async () => {
       await switchToServer(server.id);
       document.querySelector('.custom-select').classList.remove('open');
     });
-    
+
     dropdownList.appendChild(dropdownItem);
   });
 }
@@ -171,35 +171,35 @@ async function switchToServer(serverId) {
     switchServerAbortController.abort();
     switchServerAbortController = null;
   }
-  
+
   const downloadsSection = document.getElementById('downloadsSection');
   if (downloadsSection) {
     downloadsSection.style.display = 'none';
   }
-  
+
   try {
     switchServerAbortController = new AbortController();
     const signal = switchServerAbortController.signal;
-    
+
     const response = await chrome.runtime.sendMessage({
       action: 'switchServer',
       serverId: serverId
     });
-    
+
     if (signal.aborted) {
       return;
     }
-    
+
     if (response?.success) {
       currentServerId = serverId;
-      
+
       currentServer = servers.find(s => s.id === serverId);
       if (currentServer) {
         updateSelectedServerDisplay(currentServer);
       }
-      
+
       const result = await checkServerConnection(serverId, signal);
-      
+
       if (signal.aborted || result.aborted) {
         return;
       }
@@ -225,23 +225,23 @@ async function switchToServer(serverId) {
 async function updateCurrentServerStatus(status) {
   const server = currentServer;
   if (!server) return;
-  
+
   const selectedServerText = document.getElementById('selectedServerText');
   if (selectedServerText) {
     selectedServerText.textContent = server.name || extractHostname(server.qbitUrl) || getMessage('unnamedServer');
   }
-  
+
   const statusElement = document.getElementById('currentServerStatus');
   if (statusElement) {
     statusElement.textContent = getMessage('checkingStatus');
     statusElement.className = 'status-area checking';
   }
-  
+
   try {
     if (status === undefined) {
       const result = await checkServerConnection(server.id);
-      status = result.success ? 
-        (result.authenticated || !result.canLogin ? 'connected' : 'needs-auth') : 
+      status = result.success ?
+        (result.authenticated || !result.canLogin ? 'connected' : 'needsAuth') :
         'disconnected';
       setServerStatus(currentServerId, status);
     }
@@ -249,7 +249,7 @@ async function updateCurrentServerStatus(status) {
       statusElement.textContent = getMessage(status + 'Status');
       statusElement.className = `status-area ${status}`;
     }
-    
+
     return status === 'connected';
   } catch (error) {
     setServerStatus(currentServerId, 'disconnected');
@@ -267,7 +267,7 @@ function updateSelectedServerDisplay(server) {
     const displayName = server.name || extractHostname(server.qbitUrl) || getMessage('unnamedServer');
     selectedServerText.textContent = displayName;
   }
-  
+
   document.querySelectorAll('.dropdown-item').forEach(item => {
     if (item.dataset.serverId === server.id) {
       item.classList.add('selected');
@@ -279,16 +279,16 @@ function updateSelectedServerDisplay(server) {
 
 function setServerStatus(serverId, status) {
   serverStatusCache.set(serverId, status);
-  
+
   if (serverId === currentServerId) {
     const currentServerStatus = document.getElementById('currentServerStatus');
     const status = serverStatusCache.get(currentServerId) || 'unknown';
     const statusText = getMessage(status + 'Status') || status;
-    
+
     if (currentServerStatus) {
       currentServerStatus.textContent = statusText;
       currentServerStatus.className = `status-area ${status}`;
-      
+
       if (statusText.length > 6) {
         currentServerStatus.style.minWidth = '70px';
       } else {
@@ -339,7 +339,7 @@ async function checkServerConnection(serverId = currentServerId, abortSignal = n
               setServerStatus(serverId, 'connected');
               return result;
             }
-          } catch {}
+          } catch { }
         }
       }
 
@@ -370,13 +370,14 @@ async function checkServerConnection(serverId = currentServerId, abortSignal = n
           status: 'aborted'
         };
       }
-      
+
       if (response?.success) {
-        const status = response.success ? 
-          (response.authenticated || !response.canLogin ? 'connected' : 'needs-auth') : 
+        const status = response.success ?
+          (response.authenticated || !response.canLogin ? 'connected' : 'needsAuth') :
           'disconnected';
         const result = {
           success: true,
+          canLogin: response.canLogin,
           authenticated: response.authenticated || false,
           version: response.version,
           status: status
@@ -388,6 +389,7 @@ async function checkServerConnection(serverId = currentServerId, abortSignal = n
         setServerStatus(serverId, 'disconnected');
         const result = {
           success: false,
+          canLogin: response.canLogin,
           authenticated: false,
           error: response?.error || getMessage('unknownError'),
           status: 'disconnected'
@@ -430,10 +432,10 @@ function refreshDownloads() {
   if (refreshBtn) {
     refreshBtn.classList.add('refreshing');
   }
-  
-  chrome.runtime.sendMessage({ 
+
+  chrome.runtime.sendMessage({
     action: 'refreshDownloads',
-    force: true 
+    force: true
   }, () => {
     updateSpeedLimitDisplay();
     if (refreshBtn) {
@@ -472,31 +474,31 @@ function localizePage() {
 
 function formatSpeed(bytesPerSecond) {
   if (bytesPerSecond === 0) return '0 B/s';
-  
+
   const units = ['B/s', 'KB/s', 'MB/s', 'GB/s'];
   let speed = bytesPerSecond;
   let unitIndex = 0;
-  
+
   while (speed >= 1024 && unitIndex < units.length - 1) {
     speed /= 1024;
     unitIndex++;
   }
-  
+
   return `${speed.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
 }
 
 function formatSize(bytes) {
   if (bytes === 0) return '0 B';
-  
+
   const units = ['B', 'KB', 'MB', 'GB', 'TB'];
   let size = bytes;
   let unitIndex = 0;
-  
+
   while (size >= 1024 && unitIndex < units.length - 1) {
     size /= 1024;
     unitIndex++;
   }
-  
+
   return `${size.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
 }
 
@@ -508,14 +510,14 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
   const downloadsSection = document.getElementById('downloadsSection');
   const downloadsList = document.getElementById('downloadsList');
   const downloadCount = document.getElementById('downloadCount');
-  
+
   if (!downloadsSection || !downloadsList) return;
 
   downloadsList.innerHTML = '';
 
   if (activeCount > 0) {
     downloadsSection.style.display = 'block';
-    
+
     if (downloadCount) {
       if (activeCount > 0) {
         downloadCount.innerHTML = `
@@ -542,7 +544,7 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
       const isSeeding = download.state === 'uploading' || download.state === 'stalledUP';
       const isChecking = download.state === 'checking';
       const isError = download.isError;
-      
+
       if (isDownloading) return 'downloading';
       if (isPaused) return 'paused';
       if (isSeeding) return 'seeding';
@@ -551,7 +553,7 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
       if (isError) return 'error';
       return 'other';
     };
-    
+
     const getPriority = (download) => {
       if (download.isDownloading) return 1;
       if (download.isPaused) return 2;
@@ -563,11 +565,11 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
       if (download.state === 'checking') return 5;
       return 6;
     };
-    
+
     const sortedDownloads = [...downloads].sort((a, b) => {
       const priorityA = getPriority(a);
       const priorityB = getPriority(b);
-      
+
       if (priorityA === priorityB) {
         if (a.progress !== b.progress) {
           return b.progress - a.progress;
@@ -576,12 +578,12 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
           return b.downloadSpeed - a.downloadSpeed;
         }
       }
-      
+
       return priorityA - priorityB;
     });
 
     const maxDisplay = 5;
-    
+
     sortedDownloads.forEach((download, index) => {
       const status = getDownloadStatus(download);
       statusStats[status].count++;
@@ -595,7 +597,7 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
         downloadItem.className = `download-item ${status === 'downloading' ? 'downloading' : ''} ${isPaused ? 'paused' : ''}`;
         downloadItem.dataset.hash = download.hash || `temp-${index}`;
         downloadItem.dataset.status = status;
-        
+
         const forceShowBtn = operateItemHash === download.hash;
         const progressPercent = (download.progress * 100).toFixed(1);
         const downloadSpeed = isPaused ? '0 B/s' : formatSpeed(download.downloadSpeed);
@@ -606,7 +608,7 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
         const pauseText = getMessage('pause') || 'Pause';
         const resumeText = getMessage('resume') || 'Resume';
         const deleteText = getMessage('delete') || 'Delete';
-        
+
         downloadItem.innerHTML = `
           <div class="download-name" title="${download.name}">
             ${download.name.substring(0, 40)}${download.name.length > 40 ? '...' : ''}
@@ -630,14 +632,14 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
             <span class="status-text ${statusClass}">${statusText}</span>
           </div>
           <div class="download-actions${forceShowBtn ? ' force-show' : ''}">
-            ${isPaused ? 
-              `<button class="action-btn resume-btn" data-action="resume">${resumeText}</button>` : 
-              `<button class="action-btn pause-btn" data-action="pause">${pauseText}</button>`
-            }
+            ${isPaused ?
+            `<button class="action-btn resume-btn" data-action="resume">${resumeText}</button>` :
+            `<button class="action-btn pause-btn" data-action="pause">${pauseText}</button>`
+          }
             <button class="action-btn delete-btn" data-action="delete">${deleteText}</button>
           </div>
         `;
-        
+
         forceShowBtn && setTimeout(() => {
           const actionsContainer = downloadItem.querySelector('.download-actions');
           actionsContainer.classList.remove('force-show');
@@ -645,12 +647,12 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
         downloadsList.appendChild(downloadItem);
       }
     });
-    
+
     const oldStatusBar = document.querySelector('.status-bar-container');
     if (oldStatusBar) {
       oldStatusBar.remove();
     }
-    
+
     const statusSegments = [];
     let totalWidth = 0;
 
@@ -670,20 +672,20 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
         totalWidth += width;
       }
     });
-    
+
     if (totalWidth > 100) {
       statusSegments.forEach(segment => {
         segment.width = (segment.width / totalWidth) * 100;
       });
     }
-    
+
     if (statusSegments.length > 0) {
       const statusBarContainer = document.createElement('div');
       statusBarContainer.className = 'status-bar-container';
 
       const statusBarInner = document.createElement('div');
       statusBarInner.className = 'status-bar-inner';
-      
+
       const statusBarHTML = statusSegments.map((segment, index) => `
         <div class="status-bar-segment ${segment.class}" 
              data-status-key="${segment.key}"
@@ -692,45 +694,45 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
              style="width: ${segment.width}%; background-color: ${segment.color}; ${index > 0 ? 'border-left: 1px solid rgba(255,255,255,0.3);' : ''}">
         </div>
       `).join('');
-      
+
       statusBarContainer.innerHTML = statusBarHTML;
-      
+
       downloadsList.parentNode.insertBefore(statusBarContainer, downloadsList);
 
       let currentHighlightIndex = -1;
       let currentStatusKey = null;
       let clearHighlight = null;
 
-      statusBarContainer.addEventListener('click', function(e) {
+      statusBarContainer.addEventListener('click', function (e) {
         clearTimeout(clearHighlight);
         const segment = e.target.closest('.status-bar-segment');
         if (!segment) return;
-        
+
         const statusKey = segment.dataset.statusKey;
-        
+
         if (statusKey !== currentStatusKey) {
           currentStatusKey = statusKey;
           currentHighlightIndex = -1;
         }
-        
+
         const matchingItems = Array.from(document.querySelectorAll('.download-item'))
           .filter(item => item.dataset.status === statusKey);
         if (matchingItems.length === 0) return;
-        
+
         currentHighlightIndex = (currentHighlightIndex + 1) % matchingItems.length;
-        
+
         document.querySelectorAll('.download-item.highlighted').forEach(item => {
           item.classList.remove('highlighted');
         });
-        
+
         const targetItem = matchingItems[currentHighlightIndex];
         targetItem.classList.add('highlighted');
-        clearHighlight = setTimeout(() => {targetItem.classList.remove('highlighted')}, 3000);
+        clearHighlight = setTimeout(() => { targetItem.classList.remove('highlighted') }, 3000);
         targetItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       });
-      
+
       statusBarContainer.querySelectorAll('.status-bar-segment').forEach(segment => {
-        segment.addEventListener('mouseenter', function(e) {
+        segment.addEventListener('mouseenter', function (e) {
           const tooltip = document.querySelector('.status-bar-tooltip') || document.createElement('div');
           const isNewTip = !tooltip.className;
           tooltip.className = 'status-bar-tooltip';
@@ -743,14 +745,14 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
           this._tooltip = tooltip;
         });
 
-        segment.addEventListener('mousemove', function(e) {
+        segment.addEventListener('mousemove', function (e) {
           if (this._tooltip) {
             this._tooltip.style.top = (e.clientY - 30) + 'px';
             this._tooltip.style.left = e.clientX + 'px';
           }
         });
 
-        segment.addEventListener('mouseleave', function() {
+        segment.addEventListener('mouseleave', function () {
           if (this._tooltip) {
             this._tooltip.remove();
             this._tooltip = null;
@@ -758,11 +760,11 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
         });
       });
     }
-    
+
     if (downloads.length > maxDisplay) {
       const remainingCount = downloads.length - maxDisplay;
       const moreText = getMessage('viewMore', [remainingCount]) || `View all ${remainingCount}...`;
-      
+
       const moreItem = document.createElement('div');
       moreItem.className = 'download-more';
       moreItem.style.textAlign = 'center';
@@ -779,7 +781,7 @@ function updateDownloadsUI(downloads, activeCount, operateItemHash) {
       });
       downloadsList.appendChild(moreItem);
     }
-    
+
   } else {
     downloadsSection.style.display = 'none';
     if (downloadCount) {
@@ -792,7 +794,7 @@ function updateRefreshIntervalDisplay(intervalMs) {
   const intervalEl = document.querySelector('.refresh-interval');
   const autoRefreshToggle = document.getElementById('autoRefreshToggle');
   if (!intervalEl) return;
-  
+
   const seconds = intervalMs / 1000;
   if (seconds === 0) {
     intervalEl.textContent = getMessage('noRefresh') || 'Off';
@@ -812,11 +814,11 @@ function updateLastUpdateTime(timestamp) {
     lastUpdatedEl.textContent = '';
     return;
   }
-  
+
   const now = new Date();
   const lastUpdate = new Date(timestamp);
   const diff = Math.floor((now - lastUpdate) / 1000);
-  
+
   if (diff < 60) {
     lastUpdatedEl.textContent = getMessage('justNow') || 'Just now';
   } else {
@@ -835,11 +837,11 @@ async function updateSpeedLimitDisplay() {
       const downloadLimitEl = document.getElementById('downloadLimit');
       const uploadLimitEl = document.getElementById('uploadLimit');
       const toggle = document.getElementById('speedLimitToggle');
-      
+
       if (downloadLimitEl) {
         downloadLimitEl.textContent = response.downloadLimitDisplay;
       }
-      
+
       if (uploadLimitEl) {
         uploadLimitEl.textContent = response.uploadLimitDisplay;
       }
@@ -861,16 +863,16 @@ async function updateSpeedLimitDisplay() {
 async function toggleSpeedLimitMode(enabled) {
   const toggle = document.getElementById('speedLimitToggle');
   const originalState = toggle.classList.contains('active');
-  
+
   try {
     const response = await chrome.runtime.sendMessage({
       action: 'toggleSpeedLimit',
       enabled: enabled
     });
-    
+
     if (response?.success && response.isEnabled !== undefined) {
       const actuallyEnabled = response.isEnabled;
-      
+
       if (actuallyEnabled === enabled) {
         updateSpeedLimitDisplay();
       } else {
@@ -898,7 +900,7 @@ async function setSpeedLimitValues(downloadLimit, uploadLimit, isAltSpeed) {
       uploadLimit: uploadLimit,
       isAltSpeed: isAltSpeed
     });
-    
+
     if (response?.success) {
       updateSpeedLimitDisplay();
       return true;
@@ -911,12 +913,12 @@ async function setSpeedLimitValues(downloadLimit, uploadLimit, isAltSpeed) {
 }
 
 function updateDownloadsUIfromCache() {
-  chrome.runtime.sendMessage({ 
-    action: 'getDownloadStatus' 
+  chrome.runtime.sendMessage({
+    action: 'getDownloadStatus'
   }, (response) => {
     if (response?.success) {
       updateDownloadsUI(response.downloads, response.activeCount);
-      
+
       if (response.lastUpdateTime) {
         updateLastUpdateTime(response.lastUpdateTime);
       } else {
@@ -930,7 +932,7 @@ function updateDownloadsUIfromCache() {
   });
 }
 
-function getCurrentInterval(){
+function getCurrentInterval() {
   chrome.runtime.sendMessage({ action: 'getCurrentInterval' }, (response) => {
     if (response.interval !== undefined) {
       updateRefreshIntervalDisplay(response.interval);
@@ -941,7 +943,7 @@ function getCurrentInterval(){
 async function quickAddMagnet() {
   const input = document.getElementById('magnetInput');
   let magnetLink = input.value.trim().toLowerCase();
-  
+
   if (!magnetLink) {
     try {
       const clipboardText = await navigator.clipboard.readText().toLowerCase();
@@ -952,7 +954,7 @@ async function quickAddMagnet() {
       console.log('Cannot read clipboard');
     }
   }
-  
+
   if (!magnetLink) {
     alert(getMessage('enterMagnetLink'));
     return;
@@ -961,25 +963,25 @@ async function quickAddMagnet() {
   const isMagnet = magnetLink.startsWith('magnet:');
   const isTorrentUrl = magnetLink.endsWith('.torrent');
   let confirmForce = false;
-  
+
   if (!isMagnet && !isTorrentUrl) {
     confirmForce = confirm(
-      getMessage('unsupportedLinkConfirm') || 
+      getMessage('unsupportedLinkConfirm') ||
       "This doesn't look like a standard magnet link or torrent file link. Still try to add it?"
     );
-    
+
     if (!confirmForce) {
       return;
     }
   }
-  
+
 
   if (!currentServer?.qbitUrl) {
     alert(getMessage('setAddressFirstPopup'));
     document.getElementById('openOptions').click();
     return;
   }
-  
+
   chrome.runtime.sendMessage({
     action: 'addMagnet',
     magnetLink: magnetLink,
@@ -989,7 +991,7 @@ async function quickAddMagnet() {
       this.textContent = isMagnet ? getMessage('magnetAddedSuccess') :
         isTorrentUrl ? getMessage('torrentAddedSuccess') : getMessage('forceAddingLink');
       this.classList.add('success');
-      setTimeout(()=>{
+      setTimeout(() => {
         this.textContent = getMessage('quickAddBtn');
         this.classList.remove('success');
       }, 2000);
@@ -1007,20 +1009,20 @@ async function pauseAllDownloads() {
     alert(getMessage('noDownloadsToPause') || 'No downloads to pause');
     return;
   }
-  
+
   const pauseAllBtn = document.getElementById('pauseAllBtn');
   pauseAllBtn.classList.add('processing');
   pauseAllBtn.disabled = true;
-  
+
   const hashes = currentDownloads.map(d => d.hash).join('|');
   const originalDownloads = [...currentDownloads];
-  
+
   try {
     const response = await chrome.runtime.sendMessage({
       action: 'pauseAllDownloads',
       hashes: hashes
     });
-    
+
     if (response?.success) {
       const refreshResponse = await waitForStatusChange(originalDownloads, 'pause');
       updateDownloadsUI(refreshResponse.downloads, refreshResponse.activeCount);
@@ -1037,26 +1039,26 @@ async function resumeAllDownloads() {
     alert(getMessage('noDownloadsToResume') || 'No downloads to resume');
     return;
   }
-  
+
   const pausedDownloads = currentDownloads.filter(d => d.isPaused);
   if (pausedDownloads.length === 0) {
     alert(getMessage('noPausedDownloads') || 'No paused downloads');
     return;
   }
-  
+
   const resumeAllBtn = document.getElementById('resumeAllBtn');
   resumeAllBtn.classList.add('processing');
   resumeAllBtn.disabled = true;
-  
+
   const hashes = pausedDownloads.map(d => d.hash).join('|');
   const originalDownloads = [...pausedDownloads];
-  
+
   try {
     const response = await chrome.runtime.sendMessage({
       action: 'resumeAllDownloads',
       hashes: hashes
     });
-    
+
     if (response?.success) {
       const refreshResponse = await waitForStatusChange(originalDownloads, 'resume');
       updateDownloadsUI(refreshResponse.downloads, refreshResponse.activeCount);
@@ -1071,12 +1073,12 @@ async function resumeAllDownloads() {
 function restoreBatchOperationButtons() {
   const pauseAllBtn = document.getElementById('pauseAllBtn');
   const resumeAllBtn = document.getElementById('resumeAllBtn');
-  
+
   if (pauseAllBtn) {
     pauseAllBtn.classList.remove('processing');
     pauseAllBtn.disabled = false;
   }
-  
+
   if (resumeAllBtn) {
     resumeAllBtn.classList.remove('processing');
     resumeAllBtn.disabled = false;
@@ -1086,10 +1088,10 @@ function restoreBatchOperationButtons() {
 function waitForStatusChange(originalDownloads, actionType, maxRetries = 5) {
   return new Promise((resolve, reject) => {
     let retryCount = 0;
-    
+
     const checkStatus = () => {
       setTimeout(() => {
-        chrome.runtime.sendMessage({ 
+        chrome.runtime.sendMessage({
           action: 'refreshDownloads',
           force: true,
           skipUpdateUI: true
@@ -1103,7 +1105,7 @@ function waitForStatusChange(originalDownloads, actionType, maxRetries = 5) {
             }
             return;
           }
-          
+
           let allChanged = true;
           for (const original of originalDownloads) {
             const newItem = refreshResponse.downloads.find(d => d.hash === original.hash);
@@ -1115,7 +1117,7 @@ function waitForStatusChange(originalDownloads, actionType, maxRetries = 5) {
               }
             }
           }
-          
+
           if (allChanged || retryCount >= maxRetries) {
             resolve(refreshResponse);
           } else {
@@ -1125,7 +1127,7 @@ function waitForStatusChange(originalDownloads, actionType, maxRetries = 5) {
         });
       }, 500);
     };
-    
+
     checkStatus();
   });
 }
@@ -1144,15 +1146,15 @@ function operateDownload(action, hash, btn) {
       fail: getMessage('resume') || 'Resume'
     }
   };
-  
-  const texts = actionTexts[action] || { 
+
+  const texts = actionTexts[action] || {
     processing: getMessage('processing') || 'Processing...',
     success: getMessage('success') || 'Done',
     fail: getMessage('fail') || 'Operation'
   };
-  
+
   const originalText = btn.textContent;
-  
+
   btn.textContent = texts.processing;
   btn.disabled = true;
 
@@ -1166,7 +1168,7 @@ function operateDownload(action, hash, btn) {
       const originalState = btn.classList.contains('pause-btn') ? 'active' : 'paused';
       const checkStatus = () => {
         setTimeout(() => {
-          chrome.runtime.sendMessage({ 
+          chrome.runtime.sendMessage({
             action: 'refreshDownloads',
             force: true,
             skipUpdateUI: true
@@ -1219,16 +1221,16 @@ function deleteDownload(hash, name) {
       </div>
     </div>
   `;
-  
+
   document.body.appendChild(modal);
-  
+
   modal.querySelector('#cancelBtn').addEventListener('click', () => {
     document.body.removeChild(modal);
   });
-  
+
   modal.querySelector('#confirmBtn').addEventListener('click', () => {
     const deleteFiles = modal.querySelector('#deleteFilesCheckbox').checked;
-    
+
     chrome.runtime.sendMessage({
       action: 'deleteDownload',
       hash: hash,
@@ -1236,16 +1238,16 @@ function deleteDownload(hash, name) {
       deleteFiles: deleteFiles
     }, (response) => {
       if (response?.success) {
-        chrome.runtime.sendMessage({ 
+        chrome.runtime.sendMessage({
           action: 'refreshDownloads',
           force: true
         });
       }
     });
-    
+
     document.body.removeChild(modal);
   });
-  
+
   modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
     if (e.target.classList.contains('modal-overlay')) {
       document.body.removeChild(modal);
@@ -1269,7 +1271,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-document.addEventListener('DOMContentLoaded', async() => {
+document.addEventListener('DOMContentLoaded', async () => {
   customI18nDefined && await customI18n.init();
   localizePage();
   initCustomSelect();
@@ -1297,32 +1299,80 @@ document.addEventListener('DOMContentLoaded', async() => {
       });
     }
   });
- 
+
+  const settingsBtn = document.getElementById('settingsBtn');
+  const settingsMenu = document.getElementById('settingsMenu');
+  let settingsMenuTimeout;
+
+  settingsBtn.addEventListener('mouseenter', () => {
+    clearTimeout(settingsMenuTimeout);
+    settingsMenu.classList.add('show');
+  });
+
+  settingsBtn.addEventListener('mouseleave', () => {
+    settingsMenuTimeout = setTimeout(() => {
+      settingsMenu.classList.remove('show');
+    }, 100);
+  });
+
+  settingsMenu.addEventListener('mouseenter', () => {
+    clearTimeout(settingsMenuTimeout);
+  });
+
+  settingsMenu.addEventListener('mouseleave', () => {
+    settingsMenuTimeout = setTimeout(() => {
+      settingsMenu.classList.remove('show');
+    }, 100);
+  });
+
+  document.getElementById('openSettingsPage').addEventListener('click', () => {
+    chrome.runtime.openOptionsPage();
+  });
+
+  const floatingBtnToggle = document.getElementById('floatingBtnToggle');
+  if (floatingBtnToggle) {
+    const result = await chrome.storage.sync.get(['enableFloatyQuickButton']);
+    floatingBtnToggle.checked = result.enableFloatyQuickButton === true;
+
+    floatingBtnToggle.addEventListener('change', async (e) => {
+      const enabled = e.target.checked;
+      await chrome.storage.sync.set({ enableFloatyQuickButton: enabled });
+
+      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      if (tab?.id) {
+        chrome.tabs.sendMessage(tab.id, {
+          action: 'toggleFloatingButton',
+          enabled: enabled
+        });
+      }
+    });
+  }
+
   let tempClipboardValue = '';
   const magnetInput = document.getElementById('magnetInput');
 
-  document.getElementById('hiddenInput').addEventListener('input', function() {
+  document.getElementById('hiddenInput').addEventListener('input', function () {
     tempClipboardValue = this.value.trim().toLowerCase();
-    
+
     if (tempClipboardValue.startsWith('magnet:') || tempClipboardValue.endsWith('.torrent')) {
       magnetInput.value = tempClipboardValue;
     }
-    
+
     this.value = '';
   });
 
   document.getElementById('quickAdd').addEventListener('click', quickAddMagnet);
-  
-  document.getElementById('quickAdd').addEventListener('mouseenter', function() {
+
+  document.getElementById('quickAdd').addEventListener('mouseenter', function () {
     const hiddenInput = document.getElementById('hiddenInput');
-    
+
     if (!magnetInput.value.trim()) {
       hiddenInput.focus();
       document.execCommand('paste');
     }
   });
 
-  document.getElementById('quickAdd').addEventListener('mouseleave', function() {
+  document.getElementById('quickAdd').addEventListener('mouseleave', function () {
     if (magnetInput.value === tempClipboardValue) {
       magnetInput.value = '';
     }
@@ -1335,12 +1385,12 @@ document.addEventListener('DOMContentLoaded', async() => {
     }
   });
 
-  document.getElementById('clearInput').addEventListener('click', function() {
+  document.getElementById('clearInput').addEventListener('click', function () {
     magnetInput.value = '';
     tempClipboardValue = '';
   });
 
-  document.getElementById('scanMagnet').addEventListener('click', async function() {
+  document.getElementById('scanMagnet').addEventListener('click', async function () {
     const dropdown = document.getElementById('searchResultsDropdown');
     const resultsList = document.getElementById('searchResultsList');
     const resultsCount = document.getElementById('resultsCount');
@@ -1349,10 +1399,10 @@ document.addEventListener('DOMContentLoaded', async() => {
     resultsList.innerHTML = '<div class="no-results">' + getMessage('scanningPage') + '...</div>';
     dropdown.classList.add('show');
     resultsCount.textContent = '0';
-    
+
     try {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      
+
       if (!tab || !tab.id) {
         resultsList.innerHTML = '<div class="no-results">' + getMessage('noActiveTab') + '</div>';
         return;
@@ -1361,7 +1411,7 @@ document.addEventListener('DOMContentLoaded', async() => {
       const response = await chrome.tabs.sendMessage(tab.id, {
         action: 'scanMagnets'
       });
-      
+
       if (response?.success && response.magnets?.length > 0) {
         const magnets = response.magnets;
         resultsCount.textContent = magnets.length;
@@ -1372,21 +1422,21 @@ document.addEventListener('DOMContentLoaded', async() => {
           resultsList.appendChild(item);
         });
       } else {
-        resultsList.innerHTML = '<div class="no-results">' + 
-          (getMessage('noMagnetsFound') || 'No magnets found on this page') + 
+        resultsList.innerHTML = '<div class="no-results">' +
+          (getMessage('noMagnetsFound') || 'No magnets found on this page') +
           '</div>';
         resultsCount.textContent = '0';
       }
     } catch (error) {
       console.error('Scan error:', error);
-      if (error.message.includes('Could not establish connection') || 
-          error.message.includes('Receiving end does not exist')) {
-        resultsList.innerHTML = '<div class="no-results">' + 
-          getMessage('connectionError') + 
+      if (error.message.includes('Could not establish connection') ||
+        error.message.includes('Receiving end does not exist')) {
+        resultsList.innerHTML = '<div class="no-results">' +
+          getMessage('connectionError') +
           '<br><small>' + getMessage('refreshPageTip') + '</small></div>';
       } else {
-        resultsList.innerHTML = '<div class="no-results">' + 
-          getMessage('scanFailed') + ': ' + (error.message || 'Unknown error') + 
+        resultsList.innerHTML = '<div class="no-results">' +
+          getMessage('scanFailed') + ': ' + (error.message || 'Unknown error') +
           '</div>';
       }
       resultsCount.textContent = '0';
@@ -1398,7 +1448,7 @@ document.addEventListener('DOMContentLoaded', async() => {
     item.className = 'search-result-item';
     item.dataset.index = index;
     let showLocateBtn = true;
-    
+
     const displayName = magnet.link.match(/dn=([^&]+)/i)?.[1] || magnet.displayName || '';
     let decodedName = displayName ? decodeURIComponent(displayName) : '';
     if (decodedName === 'Decoded magnet link') {
@@ -1419,14 +1469,14 @@ document.addEventListener('DOMContentLoaded', async() => {
       ${showLocateBtn ? `<button class="locate-btn" title="${getMessage('locateOnPageTooltip' || 'Locate this magnet on the page')}">
         ${getMessage('locateOnPage') || 'Locate'}</button>` : ''}
     `;
-    
+
     item.addEventListener('click', (e) => {
       if (!e.target.closest('.locate-btn')) {
         document.getElementById('magnetInput').value = magnet.link;
         document.getElementById('searchResultsDropdown').classList.remove('show');
       }
     });
-    
+
     const locateBtn = item.querySelector('.locate-btn');
     locateBtn && locateBtn.addEventListener('click', async (e) => {
       e.stopPropagation();
@@ -1438,7 +1488,7 @@ document.addEventListener('DOMContentLoaded', async() => {
         });
       }
     });
-    
+
     return item;
   }
 
@@ -1446,11 +1496,11 @@ document.addEventListener('DOMContentLoaded', async() => {
     const dropdown = document.getElementById('searchResultsDropdown');
     const searchBtn = document.getElementById('scanMagnet');
     const inputGroup = document.querySelector('.magnet-input-group');
-    
-    if (dropdown.classList.contains('show') && 
-        !dropdown.contains(e.target) && 
-        !searchBtn.contains(e.target) &&
-        !inputGroup.contains(e.target)) {
+
+    if (dropdown.classList.contains('show') &&
+      !dropdown.contains(e.target) &&
+      !searchBtn.contains(e.target) &&
+      !inputGroup.contains(e.target)) {
       dropdown.classList.remove('show');
     }
   });
@@ -1462,28 +1512,28 @@ document.addEventListener('DOMContentLoaded', async() => {
   document.getElementById('pauseAllBtn').addEventListener('click', () => {
     pauseAllDownloads();
   });
-  
+
   document.getElementById('resumeAllBtn').addEventListener('click', () => {
     resumeAllDownloads();
   });
 
-  document.getElementById('speedLimitToggle').addEventListener('click', async function() {
+  document.getElementById('speedLimitToggle').addEventListener('click', async function () {
     const currentActive = this.classList.contains('active');
     const newState = !currentActive;
-    
+
     if (newState) {
       this.classList.add('active');
     } else {
       this.classList.remove('active');
     }
-    
+
     await toggleSpeedLimitMode(newState);
   });
 
   chrome.storage.sync.get(['autoRefresh'], (settings) => {
     const autoRefreshToggle = document.getElementById('autoRefreshToggle');
     autoRefreshToggle.checked = settings.autoRefresh || false;
-    
+
     autoRefreshToggle.addEventListener('change', (e) => {
       const enabled = e.target.checked;
       chrome.storage.sync.set({ autoRefresh: enabled });
@@ -1494,20 +1544,20 @@ document.addEventListener('DOMContentLoaded', async() => {
       }
     });
   });
-  
+
   document.getElementById('manualRefresh').addEventListener('click', () => {
     refreshDownloads();
   });
 
   document.addEventListener('click', (event) => {
     const target = event.target;
-    
+
     if (target.classList.contains('action-btn')) {
       const action = target.dataset.action;
       const downloadItem = target.closest('.download-item');
       const hash = downloadItem?.dataset.hash;
       const name = downloadItem?.querySelector('.download-name')?.title;
- 
+
       if (!hash || !name) return;
 
       if (action === 'pause' || action === 'resume') {
@@ -1515,7 +1565,7 @@ document.addEventListener('DOMContentLoaded', async() => {
       } else if (action === 'delete') {
         deleteDownload(hash, name, target);
       }
-      
+
       event.preventDefault();
       event.stopPropagation();
     }
@@ -1525,14 +1575,14 @@ document.addEventListener('DOMContentLoaded', async() => {
     if (e.target.classList.contains('sequential-toggle-checkbox')) {
       const hash = e.target.dataset.hash;
       const enabled = e.target.checked;
-      
+
       try {
         const response = await chrome.runtime.sendMessage({
           action: 'setSequentialDownload',
           hash: hash,
           enabled: enabled
         });
-        
+
         if (!response?.success) {
           e.target.checked = !enabled;
         }
@@ -1543,11 +1593,11 @@ document.addEventListener('DOMContentLoaded', async() => {
     }
   });
 
-  
-  document.getElementById('openOptions').addEventListener('click', () => {
+
+  document.getElementById('settingsBtn').addEventListener('click', () => {
     chrome.runtime.openOptionsPage();
   });
-  
+
   document.getElementById('openWebUI').addEventListener('click', async () => {
     if (currentServer?.qbitUrl) {
       chrome.tabs.create({ url: currentServer.qbitUrl });
@@ -1556,5 +1606,5 @@ document.addEventListener('DOMContentLoaded', async() => {
       chrome.runtime.openOptionsPage();
     }
   });
-  
+
 });

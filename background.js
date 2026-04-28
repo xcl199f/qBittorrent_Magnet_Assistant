@@ -1,14 +1,14 @@
 import './i18n-manager.js';
 
-let getMessage = function(key, substitutions = []) {
+let getMessage = function (key, substitutions = []) {
   return chrome.i18n.getMessage(key, substitutions);
 };
 
-if (typeof customI18n !== 'undefined' && customI18n && 
-  typeof customI18n.init === 'function' && 
+if (typeof customI18n !== 'undefined' && customI18n &&
+  typeof customI18n.init === 'function' &&
   typeof customI18n.getMessage === 'function') {
   customI18n.init().then(() => {
-    getMessage = function(key, substitutions = []) {
+    getMessage = function (key, substitutions = []) {
       return customI18n.getMessage(key, substitutions);
     };
   }).catch(error => {
@@ -23,16 +23,16 @@ function extractInfoHash(magnetLink) {
 
 function formatSpeed(bytesPerSecond) {
   if (bytesPerSecond === 0) return '0 B/s';
-  
+
   const units = ['B/s', 'KB/s', 'MB/s', 'GB/s'];
   let speed = bytesPerSecond;
   let unitIndex = 0;
-  
+
   while (speed >= 1024 && unitIndex < units.length - 1) {
     speed /= 1024;
     unitIndex++;
   }
-  
+
   return `${speed.toFixed(unitIndex === 0 ? 0 : 1)} ${units[unitIndex]}`;
 }
 
@@ -42,7 +42,7 @@ function sendMessageSafely(message) {
       if (chrome.runtime.lastError) {
         const errorMsg = chrome.runtime.lastError.message;
         if (errorMsg.includes('Receiving end does not exist') ||
-            errorMsg.includes('The message port closed before a response was received')
+          errorMsg.includes('The message port closed before a response was received')
         ) {
           resolve(null);
         } else {
@@ -99,7 +99,7 @@ async function getServerInfo(serverId) {
 
 async function getServerCredentials(serverId) {
   const server = await getServerInfo(serverId);
-  
+
   return {
     qbitUrl: server.qbitUrl,
     qbitUsername: server.qbitUsername || '',
@@ -109,7 +109,7 @@ async function getServerCredentials(serverId) {
 
 async function temporarilyDisableLogin(server) {
   const disableUntil = Date.now() + (15 * 60 * 1000);
-  
+
   const record = {
     disableUntil: disableUntil,
     failedCredentials: {
@@ -119,10 +119,10 @@ async function temporarilyDisableLogin(server) {
     },
     timestamp: Date.now()
   };
-  
+
   const data = await chrome.storage.local.get(['loginDisabledRecords']);
   const records = data.loginDisabledRecords || {};
-  
+
   records[server.id] = record;
   await chrome.storage.local.set({ loginDisabledRecords: records });
 }
@@ -142,25 +142,26 @@ async function isLoginDisabled(serverId) {
   }
 
   const server = await getServerInfo(serverId);
-  
+
   if (!server) {
     await clearLoginDisabled(serverId);
     return false;
   }
 
-  const areCredentialsSame = 
+  const areCredentialsSame =
     server.qbitUsername === record.failedCredentials.username &&
     server.qbitPassword === record.failedCredentials.password;
-  
+
   if (!areCredentialsSame) {
     await clearLoginDisabled(serverId);
     return false;
   }
-  
+
   return true;
 }
 
 async function clearLoginDisabled(serverId) {
+  if (!serverId) return;
   const data = await chrome.storage.local.get(['loginDisabledRecords']);
   const records = data.loginDisabledRecords || {};
   delete records[serverId];
@@ -179,9 +180,9 @@ class QBittorrentClient {
     this.serverSessions = new Map();
     this.currentControllers = new Set();
   }
-  
+
   initialize(server) {
-    this.serverId = server.id; 
+    this.serverId = server.id;
     this.baseURL = server.qbitUrl;
     this.restoreSession();
   }
@@ -192,10 +193,10 @@ class QBittorrentClient {
     }
     this.currentControllers.clear();
   }
-    
+
   async makeRequest(endpoint, options = {}) {
     const url = `${this.baseURL}${endpoint}`;
-    
+
     const defaultOptions = {
       credentials: 'include',
       headers: {
@@ -204,27 +205,27 @@ class QBittorrentClient {
         'Accept': 'application/json, text/plain, */*'
       }
     };
-    
+
     const finalOptions = { ...defaultOptions, ...options };
-    
+
     if (this.session.csrfToken && !finalOptions.headers['X-CSRF-Token']) {
       finalOptions.headers['X-CSRF-Token'] = this.session.csrfToken;
     }
-    
+
     const MAX_RETRIES = options.maxRetries || 2;
-    
+
     for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
       const controller = new AbortController();
       this.currentControllers.add(controller);
       const timeoutId = setTimeout(() => controller.abort(), 15000);
-      
+
       try {
         const attemptOptions = { ...finalOptions, signal: controller.signal };
         const response = await fetch(url, attemptOptions);
-        
+
         clearTimeout(timeoutId);
         this.currentControllers.delete(controller);
-        
+
         if (response.status === 401 || response.status === 403) {
           const retryInfo = {
             url,
@@ -234,12 +235,12 @@ class QBittorrentClient {
           };
           return await this.retryWithLogin(response, retryInfo);
         }
-        
+
         if (response.status >= 500 && attempt < MAX_RETRIES) {
           await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
           continue;
         }
-        
+
         return response;
       } catch (error) {
         clearTimeout(timeoutId);
@@ -253,11 +254,11 @@ class QBittorrentClient {
           await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
           continue;
         }
-        
+
         if (error.name === 'AbortError' || error.name === 'TypeError') {
           this.isTestClient || downloadManager.handleConnectionStatusChange(false);
         }
-        
+
         throw error;
       }
     }
@@ -268,7 +269,7 @@ class QBittorrentClient {
       return failedResponse;
     }
     retryInfo.retryCount++;
-    
+
     try {
       this.session.csrfToken = null;
       this.session.cookie = null;
@@ -285,10 +286,10 @@ class QBittorrentClient {
           const controller = new AbortController();
           const timeoutId = setTimeout(() => controller.abort(), 15000);
           retryInfo.options.signal = controller.signal;
-          
+
           const retryResponse = await fetch(retryInfo.url, retryInfo.options);
           clearTimeout(timeoutId);
-          
+
           return retryResponse;
         } else {
           temporarilyDisableLogin(server);
@@ -301,7 +302,7 @@ class QBittorrentClient {
 
     return failedResponse;
   }
-  
+
   async testConnection() {
     try {
       const response = await this.makeRequest('/api/v2/app/version', {
@@ -312,24 +313,29 @@ class QBittorrentClient {
           'Origin': new URL(this.baseURL).origin
         }
       });
-      
+
       if (response.ok) {
         const version = await response.text();
         this.isTestClient || downloadManager.handleConnectionStatusChange(true);
-        
+
         let authenticated = false;
         let csrfEnabled = false;
-        let canLogin = false;
-        
         if (this.session.csrfToken) {
           authenticated = true;
           csrfEnabled = true;
         } else {
-          canLogin = true;
+          const cookies = await this.fetchAndStoreCookies();
+          const hasValidCookies = cookies.some(c => c.name === 'SID');
+          if (hasValidCookies) {
+            authenticated = true;
+            csrfEnabled = !!this.session.csrfToken;
+          }
+
         }
-        
-        return { 
-          success: true, 
+        let canLogin = !authenticated;
+
+        return {
+          success: true,
           version: version,
           authenticated: authenticated,
           csrfEnabled: csrfEnabled,
@@ -343,16 +349,16 @@ class QBittorrentClient {
       this.isTestClient || downloadManager.handleConnectionStatusChange(false);
 
       if (error.name === 'TypeError' || error.name === 'AbortError') {
-        return { 
-          success: false, 
+        return {
+          success: false,
           error: error.message,
           connected: false,
           authenticated: false
         };
       }
-      
-      return { 
-        success: false, 
+
+      return {
+        success: false,
         error: error.message,
         connected: false,
         authenticated: false
@@ -364,7 +370,7 @@ class QBittorrentClient {
     this.isTestClient || downloadManager.handleConnectionStatusChange(false);
 
     if (response.status === 403) {
-      return { 
+      return {
         success: true,
         connected: true,
         authenticated: false,
@@ -373,9 +379,9 @@ class QBittorrentClient {
         error: await isLoginDisabled(this.serverId) && getMessage('loginDisable') || response.error || getMessage('authRequiredCSRF')
       };
     }
-    
+
     if (response.status === 401) {
-      return { 
+      return {
         success: true,
         connected: true,
         authenticated: false,
@@ -385,8 +391,8 @@ class QBittorrentClient {
       };
     }
 
-    return { 
-      success: false, 
+    return {
+      success: false,
       error: `HTTP ${response.status}`,
       needsAuth: response.status === 403
     };
@@ -397,7 +403,7 @@ class QBittorrentClient {
       const formData = new URLSearchParams();
       formData.append('username', username);
       formData.append('password', password);
-      
+
       const loginResponse = await fetch(`${this.baseURL}/api/v2/auth/login`, {
         method: 'POST',
         body: formData,
@@ -423,26 +429,28 @@ class QBittorrentClient {
         return { success: false, status: loginResponse.status, error: getMessage('loginFailed') };
       }
     } catch (error) {
+      console.error("login error:", error);
       return { success: false, status: '', error: error.message };
     }
   }
 
-  async logout(serverUrl = null) {
+  async logout(serverUrl = null, serverId = null) {
     const urlToUse = serverUrl || this.baseURL;
     if (!urlToUse) return { success: false, error: getMessage('noServerAddress') };
-    
+    clearLoginDisabled(serverId);
+
     try {
       const tempClient = new QBittorrentClient();
       tempClient.initialize({ qbitUrl: urlToUse });
       await tempClient.makeRequest('/api/v2/auth/logout', {
         method: 'POST'
       });
-    } catch (error) {}
-    
+    } catch (error) { }
+
     return new Promise((resolve) => {
       const url = new URL(urlToUse);
       const domain = url.hostname;
-      
+
       chrome.cookies.getAll({ domain: domain }, (cookies) => {
         if (!cookies || cookies.length === 0) {
           resolve({ success: true, deleted: 0 });
@@ -454,7 +462,7 @@ class QBittorrentClient {
           return new Promise((resolveDelete) => {
             const protocol = cookie.secure ? 'https://' : 'http://';
             const cookieUrl = `${protocol}//${cookie.domain}${cookie.path}`;
-            
+
             chrome.cookies.remove({
               url: cookieUrl,
               name: cookie.name
@@ -464,14 +472,14 @@ class QBittorrentClient {
             });
           });
         });
-        
+
         Promise.all(deletePromises).then(() => {
           if (!serverUrl || serverUrl === this.baseURL) {
             this.session.cookie = null;
             this.session.csrfToken = null;
             this.session.lastLogin = 0;
           }
-          
+
           resolve({ success: true, deleted: deletedCount });
         });
       });
@@ -484,14 +492,14 @@ class QBittorrentClient {
     if (server.qbitUrl) {
       this.serverId = server.id;
       this.baseURL = server.qbitUrl;
-      
+
       const data = await chrome.storage.local.get(['serverSessions']);
       const allSessions = data.serverSessions || {};
-      
+
       if (allSessions[server.qbitUrl]) {
         this.session = { ...allSessions[server.qbitUrl] };
       }
-      
+
       this.serverSessions.set(server.qbitUrl, { ...this.session });
     } else {
       this.session = {
@@ -509,7 +517,7 @@ class QBittorrentClient {
 
     if (this.baseURL) {
       this.serverSessions.set(this.baseURL, { ...this.session });
-      
+
       const data = await chrome.storage.local.get(['serverSessions']);
       const allSessions = data.serverSessions || {};
       allSessions[this.baseURL] = { ...this.session };
@@ -524,7 +532,7 @@ class QBittorrentClient {
     } else {
       const data = await chrome.storage.local.get(['serverSessions']);
       const allSessions = data.serverSessions || {};
-      
+
       if (allSessions[this.baseURL]) {
         this.session = { ...allSessions[this.baseURL] };
         this.serverSessions.set(this.baseURL, { ...this.session });
@@ -541,13 +549,13 @@ class QBittorrentClient {
   async fetchAndStoreCookies() {
     return new Promise((resolve) => {
       const url = new URL(this.baseURL);
-      
+
       chrome.cookies.getAll({ domain: url.hostname }, (cookies) => {
         if (chrome.runtime.lastError) {
           resolve([]);
           return;
         }
-        
+
         const sidCookie = cookies.find(c => c.name === 'SID');
         if (sidCookie) {
           this.session.cookie = sidCookie.value;
@@ -557,17 +565,17 @@ class QBittorrentClient {
             this.saveSession();
           }
         }
-        
+
         resolve(cookies);
       });
     });
   }
-  
+
   async addMagnet(magnetLink, options = {}) {
     try {
       const formData = new FormData();
       formData.append('urls', magnetLink);
-      
+
       if (options.category) {
         formData.append('category', options.category);
       }
@@ -581,16 +589,16 @@ class QBittorrentClient {
       if (options.sequential) {
         formData.append('sequentialDownload', 'true');
       }
-      
+
       const headers = {
         'Referer': this.baseURL,
         'Origin': new URL(this.baseURL).origin
       };
-      
+
       if (this.session.csrfToken) {
         headers['X-CSRF-Token'] = this.session.csrfToken;
       }
-      
+
       const response = await qbtClient.makeRequest(`/api/v2/torrents/add`, {
         method: 'POST',
         body: formData
@@ -599,9 +607,9 @@ class QBittorrentClient {
       if (response.ok && text.includes('Ok')) {
         return { success: true };
       } else {
-        return { 
-          success: false, 
-          error: text, 
+        return {
+          success: false,
+          error: text,
           status: response.status,
           csrfError: response.status === 403
         };
@@ -610,7 +618,7 @@ class QBittorrentClient {
       return { success: false, error: error.message };
     }
   }
-  
+
   async getSpeedLimitsMode() {
     const modeResponse = await this.makeRequest('/api/v2/transfer/speedLimitsMode');
     if (!modeResponse.ok) {
@@ -650,10 +658,10 @@ class DownloadManager {
     this.loadSettings();
     this.setupAlarmListener();
   }
-  
+
   initialize() {
     this.isConnected = false;
-    
+
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.action === 'connectionStatusChanged') {
         this.handleConnectionStatusChange(request.connected);
@@ -663,13 +671,13 @@ class DownloadManager {
 
   setupAlarmListener() {
     if (this.alarmListenerSetup) return;
-    
+
     chrome.alarms.onAlarm.addListener((alarm) => {
       if (alarm.name === this.alarmName) {
         this.checkDownloadStatus();
       }
     });
-    
+
     this.alarmListenerSetup = true;
   }
 
@@ -681,11 +689,11 @@ class DownloadManager {
 
       const activeSec = parseInt(settings.activeRefreshInterval) || 5;
       const inactiveSec = parseInt(settings.inactiveRefreshInterval) || 0;
-      
+
       this.activeInterval = activeSec * 1000;
       this.inactiveInterval = inactiveSec === 0 ? 0 : inactiveSec * 1000;
       this.isAutoRefresh = settings.autoRefresh || false;
-      
+
       return true;
     } catch (error) {
       return false;
@@ -700,7 +708,7 @@ class DownloadManager {
     if (connected && !this.isConnected) {
       this.isConnected = true;
       this.checkRetryCount = 0;
-      
+
       if (this.isAutoRefresh) {
         this.startMonitoring();
       }
@@ -714,7 +722,7 @@ class DownloadManager {
   startMonitoring() {
     this.restartMonitoring();
   }
-  
+
   stopMonitoring() {
     chrome.alarms.clear(this.alarmName);
 
@@ -729,7 +737,7 @@ class DownloadManager {
     if (!this.isConnected || !this.isAutoRefresh) {
       return;
     }
-    sendMessageSafely({action: 'refreshIntervalUpdate', interval: this.currentInterval});
+    sendMessageSafely({ action: 'refreshIntervalUpdate', interval: this.currentInterval });
     this.checkDownloadStatus(true);
 
     if (
@@ -752,7 +760,7 @@ class DownloadManager {
       }, this.currentInterval);
     }
   }
-  
+
   clearDownloads() {
     this.activeDownloads.clear();
     this.updateExtensionBadge();
@@ -774,7 +782,7 @@ class DownloadManager {
       this.pendingCheckPromise = null;
     }
   }
-  
+
   async checkDownloadStatus(force = false, skipUpdateUI = false) {
     if (this.isChecking && this.pendingCheckPromise) {
       return this.pendingCheckPromise;
@@ -784,10 +792,10 @@ class DownloadManager {
     if (!force && now - this.lastCheckTime < this.currentInterval - 200) {
       return null;
     }
-    
+
     this.isChecking = true;
     this.lastCheckTime = now;
-    
+
     this.pendingCheckPromise = (async () => {
       try {
         if (!qbtClient.baseURL) {
@@ -798,7 +806,7 @@ class DownloadManager {
           }
           qbtClient.initialize(server);
         }
-        
+
         const response = await qbtClient.makeRequest('/api/v2/torrents/info', {
           method: 'GET',
           timeout: 10000
@@ -810,7 +818,7 @@ class DownloadManager {
           const torrents = await response.clone().json();
           this.updateActiveDownloads(torrents);
 
-          if(!skipUpdateUI){
+          if (!skipUpdateUI) {
             this.updateExtensionBadge();
             this.updatePopupStatus();
           }
@@ -821,7 +829,7 @@ class DownloadManager {
           return response;
         } else {
           this.checkRetryCount++;
-          
+
           if (response.status === 401 || response.status === 403) {
             this.isTestClient || downloadManager.handleConnectionStatusChange(false);
           }
@@ -829,17 +837,17 @@ class DownloadManager {
             this.isConnected = false;
             this.stopMonitoring();
           }
-          
+
           return response;
         }
       } catch (error) {
         this.checkRetryCount++;
-        
+
         if (error.name === 'TypeError' || error.name === 'TimeoutError') {
           this.isConnected = false;
           this.stopMonitoring();
         }
-        
+
         return {
           ok: false,
           status: error.name === 'AbortError' ? 408 : 0,
@@ -851,10 +859,10 @@ class DownloadManager {
         this.pendingCheckPromise = null;
       }
     })();
-    
+
     return this.pendingCheckPromise;
   }
-  
+
   hasActiveDownloads(torrents) {
     const activeStates = [
       'downloading',
@@ -865,15 +873,15 @@ class DownloadManager {
       'checkingDL',
       'queued'
     ];
-    
-    return torrents.some(torrent => 
+
+    return torrents.some(torrent =>
       activeStates.includes(torrent.state)
     );
   }
 
   setAutoRefresh(enabled) {
     this.isAutoRefresh = enabled;
-    
+
     if (enabled) {
       this.startMonitoring();
     } else {
@@ -941,9 +949,9 @@ class DownloadManager {
         }
       }
     });
-    
+
     this.activeDownloads = newActiveDownloads;
-    
+
     newlyCompleted.forEach(completed => {
       this.showDownloadCompleteNotification(completed);
     });
@@ -952,23 +960,23 @@ class DownloadManager {
   showDownloadCompleteNotification(download) {
     const title = getMessage('downloadComplete');
     const savedToText = getMessage('savedTo');
-    
+
     showNotification(`✅ ${title}`, `${download.name}\n${savedToText}: ${download.savePath}`);
-    
+
     this.updateExtensionBadge();
   }
-  
+
   updateExtensionBadge() {
     const activeCount = this.activeDownloads.size;
     if (activeCount > 0) {
       let badgeColor = this.isAltSpeedMode ? '#f9931fff' : '#5ed651ff'
       chrome.action.setBadgeText({ text: activeCount.toString() });
-      
+
       let totalProgress = 0;
       let downloadSpeed = 0;
       let hasStalledDownloads = false;
       let hasErrorDownloads = false;
-      
+
       this.activeDownloads.forEach(download => {
         totalProgress += download.progress;
         downloadSpeed += download.downloadSpeed;
@@ -976,9 +984,9 @@ class DownloadManager {
           hasErrorDownloads = true;
           badgeColor = '#ff0000ff';
         }
-        if (download.progress < 1 && download.downloadSpeed === 0 && 
-            (['metaDL', 'stalledDL'].includes(download.state) && Date.now() - new Date(download.addedTime).getTime() > 30000
-             || download.state === 'downloading')) {
+        if (download.progress < 1 && download.downloadSpeed === 0 &&
+          (['metaDL', 'stalledDL'].includes(download.state) && Date.now() - new Date(download.addedTime).getTime() > 30000
+            || download.state === 'downloading')) {
           hasStalledDownloads = true;
           badgeColor = '#c15448ff';
         }
@@ -986,7 +994,7 @@ class DownloadManager {
 
       chrome.action.setBadgeBackgroundColor({ color: badgeColor });
       chrome.action.setBadgeTextColor({ color: '#FFFFFF' });
-      
+
       const avgProgress = Math.round((totalProgress / activeCount) * 100);
 
       let speedText = '';
@@ -1007,14 +1015,14 @@ class DownloadManager {
         ${getMessage('taskCountTooltip')}:  ${activeCount}
         ${getMessage('totalProgressTip')}:    ${avgProgress}%
         ${speedText}`
-      
+
       chrome.action.setTitle({ title: title });
     } else {
       chrome.action.setBadgeText({ text: '' });
       chrome.action.setTitle({ title: getMessage('extensionName') });
     }
   }
-  
+
   updatePopupStatus() {
     if (!this.popupIsOpen) {
       return;
@@ -1055,17 +1063,17 @@ function showNotification(title, message, silent = false) {
 
 function showConfigNotification(magnetLink, isSequential, errorMessage) {
   const notificationId = 'config-required-' + Date.now();
-  
+
   const buttonClickHandler = (id, buttonIndex) => {
     if (id !== notificationId) return;
     handleNotificationAction();
   };
-  
+
   const notificationClickHandler = (id) => {
     if (id !== notificationId) return;
     handleNotificationAction();
   };
-  
+
   const handleNotificationAction = () => {
     chrome.notifications.clear(notificationId);
 
@@ -1095,7 +1103,7 @@ function showConfigNotification(magnetLink, isSequential, errorMessage) {
     priority: 2,
     requireInteraction: true
   });
-  
+
   setTimeout(() => {
     chrome.notifications.onButtonClicked.removeListener(buttonClickHandler);
     chrome.notifications.onClicked.removeListener(notificationClickHandler);
@@ -1108,48 +1116,48 @@ async function addMagnetToServer(link, options = {}) {
   let targetServerId = options.serverId || data.currentServerId;
   const server = await getServerInfo(targetServerId);
   const isForce = options.force;
-  
+
   if (!server || !server.qbitUrl) {
     return { success: false, error: getMessage('noAddressSet') };
   }
   link = link.toLowerCase();
   const isMagnet = link.startsWith('magnet:');
   const isTorrentUrl = link.endsWith('.torrent');
-  
+
   if (!isForce && !isMagnet && !isTorrentUrl) {
     return { success: false, error: getMessage('invalidLink') };
   }
-  
+
   const finalSettings = {
     category: options.category || server.defaultCategory || '',
     tags: options.tags || server.defaultTags || '',
     savepath: options.savepath || server.defaultSavePath || '',
     sequential: options.sequential || false
   };
-  
+
   qbtClient.initialize(server);
-  
+
   await qbtClient.restoreSession(server.qbitUrl);
-  
+
   const connectionResult = await qbtClient.testConnection();
 
   if (!connectionResult.success || !connectionResult.connected) {
-    return { 
-      success: false, 
+    return {
+      success: false,
       error: getMessage('serverUnreachable'),
       connectionFailed: true
     };
   }
 
-  if (connectionResult.canLogin && !connectionResult.authenticated && 
-      (!server.qbitUsername || !server.qbitPassword)) {
-    return { 
-      success: false, 
+  if (connectionResult.canLogin && !connectionResult.authenticated &&
+    (!server.qbitUsername || !server.qbitPassword)) {
+    return {
+      success: false,
       error: getMessage('authRequiredNoCreds'),
       needsAuth: true
     };
   }
-  
+
   const result = await qbtClient.addMagnet(link, finalSettings);
   const infohash = extractInfoHash(link);
 
@@ -1170,15 +1178,46 @@ async function addMagnetToServer(link, options = {}) {
       retryCount++;
     }
   } else if (infohash && downloadManager.activeDownloads.has(infohash)) {
-    return { 
-      success: false, 
+    return {
+      success: false,
       status: result.status,
       error: getMessage('torrentAlreadyExists'),
-      alreadyExists: true 
+      alreadyExists: true
     };
   }
-  
+
   return result;
+}
+
+async function addMagnetToServerAndNotification(link, options) {
+  try {
+    const result = await addMagnetToServer(link, options);
+    const isSequential = options.sequential || false;
+
+    if (result.success) {
+      if (isSequential) { // && result.sequentialSuccess
+        showNotification(getMessage('success'), getMessage('magnetAddedSequential'));
+      } else {
+        const isMagnet = link.startsWith('magnet:');
+        const magnetAdded = isMagnet ? getMessage('magnetAdded') : getMessage('torrentAdded');
+        if (isSequential) {
+          showNotification(getMessage('warning'), magnetAdded + "\n" + getMessage('sequentialSetFailed'));
+        } else {
+          showNotification(getMessage('success'), magnetAdded);
+        }
+      }
+    } else {
+      if (result.error === getMessage('noAddressSet') || result.connectionFailed) {
+        showConfigNotification(link, isSequential, result.error);
+      } else {
+        showNotification(getMessage('failed'), getMessage('addFailedDetail', [result.error || getMessage('unknownError')]));
+      }
+    }
+    return result;
+  } catch (error) {
+    showNotification(getMessage('error'), getMessage('processFailedDetail', [error.message]));
+    return { success: false, error: getMessage('processFailedDetail', [error.message]) }
+  }
 }
 
 chrome.runtime.onInstalled.addListener(() => {
@@ -1214,38 +1253,26 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     true
   );
 
-  setTimeout(() => {chrome.notifications.clear(notificationId)}, 2000);
+  setTimeout(() => { chrome.notifications.clear(notificationId) }, 2000);
 
-  try {
-    const result = await addMagnetToServer(link, {
-      sequential: isSequential
-    });
-      
-    if (result.success) {
-      if (isSequential) { // && result.sequentialSuccess
-        showNotification(getMessage('success'), getMessage('magnetAddedSequential'));
-      } else {
-        const magnetAdded = isMagnet ? getMessage('magnetAdded') : getMessage('torrentAdded');
-        if (isSequential) {
-          showNotification(getMessage('warning'), magnetAdded + "\n" + getMessage('sequentialSetFailed'));
-        } else {
-          showNotification(getMessage('success'), magnetAdded);
-        }
-      }
-    } else {
-      if (result.error === getMessage('noAddressSet') || result.connectionFailed) {
-        showConfigNotification(link, isSequential, result.error);
-      } else {
-        showNotification(getMessage('failed'), getMessage('addFailedDetail', [result.error || getMessage('unknownError')]));
-      }
-    }
-  } catch (error) {
-    showNotification(getMessage('error'), getMessage('processFailedDetail', [error.message]));
-  }
+  addMagnetToServerAndNotification(link, {
+    sequential: isSequential
+  });
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   const actions = {
+    getI18nMessages: async () => {
+      const messages = {};
+      for (const key of request.keys) {
+        messages[key] = getMessage(key);
+      }
+      sendResponse({
+        success: true,
+        messages: messages
+      });
+    },
+
     popupClosed: async () => {
       downloadManager.setPopupOpenStatus(false);
       sendResponse({ success: true });
@@ -1257,7 +1284,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     },
 
     logout: async () => {
-      const result = await qbtClient.logout(request.serverUrl);
+      const result = await qbtClient.logout(request.serverUrl, request.serverId);
       sendResponse(result);
     },
 
@@ -1271,20 +1298,20 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       let servers = data.servers || [];
 
       const serverToDelete = servers.find(s => s.id === request.serverId);
-      
+
       servers = servers.filter(s => s.id !== request.serverId);
-      
+
       let currentServerId = data.currentServerId;
       if (currentServerId === request.serverId) {
         currentServerId = servers.length > 0 ? servers[0].id : null;
       }
 
       await chrome.storage.sync.set({ servers, currentServerId });
-      
+
       if (serverToDelete && serverToDelete.qbitUrl) {
         const sessionData = await chrome.storage.local.get(['serverSessions']);
         const allSessions = sessionData.serverSessions || {};
-        
+
         if (allSessions[serverToDelete.qbitUrl]) {
           delete allSessions[serverToDelete.qbitUrl];
           await chrome.storage.local.set({ serverSessions: allSessions });
@@ -1324,10 +1351,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           qbtClient.serverSessions.delete(serverToDelete.qbitUrl);
         }
       }
-      
+
       sendResponse({ success: true });
     },
-  
+
     switchServer: async () => {
       try {
         if (request.serverId === qbtClient.serverId) {
@@ -1343,15 +1370,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (server) {
           qbtClient.saveSession();
           await chrome.storage.sync.set({ currentServerId: request.serverId });
-          
+
           qbtClient.initialize(server);
           qbtClient.restoreSession(server.qbitUrl);
 
           sendResponse({ success: true });
         }
       } catch (error) {
-        sendResponse({ 
-          success: false, 
+        sendResponse({
+          success: false,
           error: error.message
         });
       }
@@ -1365,7 +1392,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ success: false, error: getMessage('noAddressSet') });
         return;
       }
-      
+
       if (qbtClient.baseURL !== server.qbitUrl) {
         qbtClient.initialize(server);
       }
@@ -1377,12 +1404,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
     testServerConnectionDirect: async () => {
       const server = request.server;
-  
+
       if (!server.qbitUrl) {
         sendResponse({ success: false, error: getMessage('noAddressSet') });
         return true;
       }
-    
+
       const tempClient = new QBittorrentClient();
       tempClient.initialize(server);
 
@@ -1395,10 +1422,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse(connectionResult);
         return true;
       }
-      
+
       if (server.qbitUsername && server.qbitPassword && connectionResult.canLogin) {
         const loginResult = await tempClient.login(server.qbitUsername, server.qbitPassword);
-        
+
         if (loginResult.success) {
           sendResponse({
             ...connectionResult,
@@ -1418,7 +1445,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       } else {
         sendResponse(connectionResult);
       }
-      
+
       return true;
     },
 
@@ -1432,7 +1459,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         interval: downloadManager.currentInterval
       });
     },
-    
+
     getLastUpdateTime: async () => {
       sendResponse({
         interval: downloadManager.lastUpdateTime
@@ -1445,11 +1472,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (!transferResponse.ok) {
           throw new Error(`Failed to get transfer info: HTTP ${transferResponse.status}`);
         }
-        
+
         const transferInfo = await transferResponse.json();
         const dlLimit = transferInfo.dl_rate_limit || 0;
         const upLimit = transferInfo.up_rate_limit || 0;
-        const isAltSpeedMode = await qbtClient.getSpeedLimitsMode(); 
+        const isAltSpeedMode = await qbtClient.getSpeedLimitsMode();
 
         sendResponse({
           success: true,
@@ -1461,7 +1488,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
 
       } catch (error) {
-        sendResponse({ 
+        sendResponse({
           success: false,
           error: error.message,
           downloadLimit: 0,
@@ -1491,15 +1518,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
         downloadManager.updateExtensionBadge();
 
-        sendResponse({ 
+        sendResponse({
           success: true,
           isEnabled: newIsEnabled,
           speedMode: newSpeedMode
         });
 
       } catch (error) {
-        sendResponse({ 
-          success: false, 
+        sendResponse({
+          success: false,
           error: error.message
         });
       }
@@ -1508,10 +1535,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     setSpeedLimitValues: async () => {
       try {
         const { downloadLimit, uploadLimit } = request;
-        
+
         let dlSuccess = true;
         let upSuccess = true;
-        
+
         if (downloadLimit !== undefined) {
           const dlResponse = await qbtClient.makeRequest('/api/v2/transfer/setDownloadLimit', {
             method: 'POST',
@@ -1520,7 +1547,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           });
           dlSuccess = dlResponse.ok;
         }
-        
+
         if (uploadLimit !== undefined) {
           const upResponse = await qbtClient.makeRequest('/api/v2/transfer/setUploadLimit', {
             method: 'POST',
@@ -1529,15 +1556,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           });
           upSuccess = upResponse.ok;
         }
-        
-        sendResponse({ 
+
+        sendResponse({
           success: dlSuccess && upSuccess,
           downloadLimit: downloadLimit || 0,
           uploadLimit: uploadLimit || 0
         });
       } catch (error) {
-        sendResponse({ 
-          success: false, 
+        sendResponse({
+          success: false,
           error: error.message
         });
       }
@@ -1550,7 +1577,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: `hashes=${request.hash}&value=${request.enabled}`
         });
-        
+
         sendResponse({ success: response.ok });
       } catch (error) {
         sendResponse({ success: false, error: error.message });
@@ -1558,13 +1585,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     },
 
     addMagnet: async () => {
-      const result = await addMagnetToServer(request.magnetLink, {
+      const result = await addMagnetToServerAndNotification(request.magnetLink, {
         sequential: request.sequential || false,
         force: request.force || false
       });
       sendResponse(result);
     },
-    
+
     getDownloadStatus: async () => {
       try {
         const downloads = Array.from(downloadManager.activeDownloads.values());
@@ -1572,13 +1599,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           success: true,
           downloads: downloads,
           activeCount: downloads.length,
-          lastUpdate: downloadManager.lastUpdateTime ? 
+          lastUpdate: downloadManager.lastUpdateTime ?
             downloadManager.lastUpdateTime.toISOString() : null,
           isConnected: downloadManager.isConnected
         });
       } catch (error) {
-        sendResponse({ 
-          success: false, 
+        sendResponse({
+          success: false,
           error: error.message,
           downloads: [],
           activeCount: 0
@@ -1589,19 +1616,19 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     refreshDownloads: async () => {
       try {
         await downloadManager.checkDownloadStatus(request.force || false, request.skipUpdateUI || false);
-        
+
         const downloads = Array.from(downloadManager.activeDownloads.values());
         sendResponse({
           success: true,
           downloads: downloads,
           activeCount: downloads.length,
-          lastUpdate: downloadManager.lastUpdateTime ? 
+          lastUpdate: downloadManager.lastUpdateTime ?
             downloadManager.lastUpdateTime.toISOString() : null,
           refreshed: true
         });
       } catch (error) {
-        sendResponse({ 
-          success: false, 
+        sendResponse({
+          success: false,
           error: error.message,
           refreshed: false
         });
@@ -1611,32 +1638,32 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     pauseAllDownloads: async () => {
       try {
         const hashes = request.hashes.split('|');
-        const promises = hashes.map(hash => 
+        const promises = hashes.map(hash =>
           qbtClient.makeRequest('/api/v2/torrents/stop', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `hashes=${hash}`
           })
         );
-        
+
         await Promise.all(promises);
         sendResponse({ success: true });
       } catch (error) {
         sendResponse({ success: false, error: error.message });
       }
     },
-    
+
     resumeAllDownloads: async () => {
       try {
         const hashes = request.hashes.split('|');
-        const promises = hashes.map(hash => 
+        const promises = hashes.map(hash =>
           qbtClient.makeRequest('/api/v2/torrents/start', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `hashes=${hash}`
           })
         );
-        
+
         await Promise.all(promises);
         sendResponse({ success: true });
       } catch (error) {
@@ -1653,8 +1680,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           },
           body: `hashes=${request.hash}`
         });
-        
-        sendResponse({ 
+
+        sendResponse({
           success: response.ok,
           status: response.status
         });
@@ -1662,7 +1689,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ success: false, error: error.message });
       }
     },
-    
+
     resumeDownload: async () => {
       try {
         const response = await qbtClient.makeRequest('/api/v2/torrents/start', {
@@ -1672,8 +1699,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           },
           body: `hashes=${request.hash}`
         });
-        
-        sendResponse({ 
+
+        sendResponse({
           success: response.ok,
           status: response.status
         });
@@ -1681,12 +1708,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendResponse({ success: false, error: error.message });
       }
     },
-    
+
     deleteDownload: async () => {
       try {
         const deleteFiles = request.deleteFiles || false;
         const endpoint = deleteFiles ? '/api/v2/torrents/delete' : '/api/v2/torrents/delete';
-        
+
         const response = await qbtClient.makeRequest(endpoint, {
           method: 'POST',
           headers: {
@@ -1694,8 +1721,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           },
           body: `hashes=${request.hash}&deleteFiles=${deleteFiles}`
         });
-        
-        sendResponse({ 
+
+        sendResponse({
           success: response.ok,
           status: response.status
         });
@@ -1704,12 +1731,12 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       }
     }
   };
-  
+
   if (actions[request.action]) {
     actions[request.action]();
     return true;
   }
-  
+
   sendResponse({ error: getMessage('unknownAction') });
 });
 
@@ -1722,18 +1749,18 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
         }
       });
     }
-    
+
     if (changes.autoRefresh) {
       downloadManager.setAutoRefresh(changes.autoRefresh.newValue);
     }
   }
 });
 
-function initialize(){
+function initialize() {
   qbtClient.loadSession().then(() => {
     qbtClient.testConnection().then(result => {
-      const status = result.success ? 
-        (result.authenticated || !result.canLogin ? 'connected' : 'needs-auth') : 
+      const status = result.success ?
+        (result.authenticated || !result.canLogin ? 'connected' : 'needs-auth') :
         'disconnected';
       status == 'connected' && qbtClient.getSpeedLimitsMode();
     });

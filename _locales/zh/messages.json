@@ -241,6 +241,34 @@
     "message": "发送到qBittorrent",
     "description": "右键菜单标题"
   },
+  "normalSendButton": {
+    "message": "发送到 qBit",
+    "description": "悬浮按钮：普通发送到qBittorrent"
+  },
+  "sequentialSendButton": {
+    "message": "顺序下载",
+    "description": "悬浮按钮：以顺序下载方式发送到qBittorrent"
+  },
+  "enableFloatingBtn": {
+    "message": "网页悬浮按钮",
+    "description": "启用网页悬浮按钮"
+  },
+  "openSettingsPage": {
+      "message": "打开设置页面",
+      "description": "从弹出菜单打开设置页面"
+  },
+  "floatingButtonEnabled": {
+      "message": "悬浮按钮已启用",
+      "description": "悬浮按钮已启用通知"
+  },
+  "floatingButtonDisabled": {
+      "message": "悬浮按钮已禁用",
+      "description": "悬浮按钮已禁用通知"
+  },
+  "floatingBtnTooltip": {
+    "message": "鼠标悬停在磁力链接上时显示发送按钮",
+    "description": "悬浮按钮开关提示"
+  },
   "cookieManager": {
     "message": "Cookie管理",
     "description": "Cookie管理"
@@ -397,7 +425,7 @@
     "description": "错误"
   },
   "extensionDescription": {
-    "message": "一款轻量级扩展，让你只需点击一次即可远程控制 qBittorrent 下载。直接从浏览器工具栏监控进度、管理任务和添加磁力链接",
+    "message": "qBittorrent 远程管理器。从工具栏监控进度、控制任务、添加磁力链接。需 qBittorrent 应用程序。",
     "description": "扩展描述"
   },
   "extensionInitialized": {
@@ -581,8 +609,8 @@
     "message": "$1分钟前",
     "description": "分钟前时间指示器"
   },
-  "needsAuth": {
-    "message": "需认证",
+  "needsAuthStatus": {
+    "message": "需要认证",
     "description": "服务器状态：需要认证"
   },
   "needsAuthNoCredentials": {
